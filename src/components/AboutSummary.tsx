@@ -3,7 +3,7 @@
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
-import Image from 'next/image';
+import ImageWithLoader from '@/components/ui/image-with-loader';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
@@ -53,8 +53,8 @@ export default function AboutSummary() {
                     transition={{ duration: 0.8 }}
                     className="relative h-[400px] w-full rounded-2xl overflow-hidden shadow-2xl group"
                 >
-                    <Image
-                        src="https://images.unsplash.com/photo-1606103323062-8411b0b5550a?auto=format&fit=crop&q=80"
+                    <ImageWithLoader
+                        src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&q=80"
                         alt="Bursa Somine Showroom"
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"

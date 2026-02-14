@@ -44,7 +44,7 @@ export default function AboutPage() {
                     </div>
                     <div className="relative aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                         <Image
-                            src="https://images.unsplash.com/photo-1504198358623-6e7f1695cd3f?auto=format&fit=crop&q=80"
+                            src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80"
                             alt="Bursa Somine Factory/Workshop"
                             fill
                             className="object-cover"

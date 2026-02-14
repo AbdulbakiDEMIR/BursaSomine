@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import ImageWithLoader from '@/components/ui/image-with-loader';
 import { Link } from '@/i18n/routing';
 import { motion } from 'framer-motion';
 
@@ -19,8 +19,8 @@ export default function Hero() {
                     transition={{ duration: 10, ease: "easeOut" }}
                     className="relative w-full h-full"
                 >
-                    <Image
-                        src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80"
+                    <ImageWithLoader
+                        src="https://images.unsplash.com/photo-1542856391-010fb87dcfed?auto=format&fit=crop&q=80"
                         alt="Luxury Fireplace"
                         fill
                         className="object-cover brightness-[0.65]" /* Slightly brighter image */

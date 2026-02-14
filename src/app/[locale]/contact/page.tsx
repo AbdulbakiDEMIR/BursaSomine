@@ -6,31 +6,30 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 export default function ContactPage() {
-    const t = useTranslations('Navigation');
+    const t = useTranslations('ContactPage');
 
     return (
         <main className="min-h-screen pt-16">
             <SectionWrapper>
-                <SectionHeader title="İletişim" subtitle="Projeleriniz için bizimle iletişime geçin." />
+                <SectionHeader title={t('title')} subtitle={t('subtitle')} />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {/* Contact Info */}
                     <div className="space-y-8">
                         <div>
-                            <h3 className="text-xl font-bold mb-4">Adres Bilgileri</h3>
+                            <h3 className="text-xl font-bold mb-4">{t('addressTitle')}</h3>
                             <p className="text-muted-foreground leading-relaxed">
                                 Bursa Şömine Fabrikası<br />
-                                Organize Sanayi Bölgesi, Mavi Cadde No: 12<br />
-                                Nilüfer / BURSA
+                                {t('address')}
                             </p>
                         </div>
 
                         <div>
-                            <h3 className="text-xl font-bold mb-4">İletişim Kanalları</h3>
+                            <h3 className="text-xl font-bold mb-4">{t('contactChannels')}</h3>
                             <div className="space-y-2 text-muted-foreground">
-                                <p>Telefon: +90 (224) 123 45 67</p>
-                                <p>E-posta: info@bursasomine.com</p>
-                                <p>Çalışma Saatleri: Pzt-Cmt 09:00 - 18:00</p>
+                                <p>{t('phone')}: +90 (224) 123 45 67</p>
+                                <p>{t('email')}: info@bursasomine.com</p>
+                                <p>{t('hours')}</p>
                             </div>
                         </div>
 
@@ -41,31 +40,31 @@ export default function ContactPage() {
 
                     {/* Contact Form */}
                     <div className="bg-background p-8 rounded-lg border border-border shadow-sm">
-                        <h3 className="text-xl font-bold mb-6">Bize Mesaj Gönderin</h3>
+                        <h3 className="text-xl font-bold mb-6">{t('formTitle')}</h3>
                         <form className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-medium">Adınız</label>
-                                    <Input id="name" placeholder="Adınız Soyadınız" />
+                                    <label htmlFor="name" className="text-sm font-medium">{t('labelName')}</label>
+                                    <Input id="name" placeholder={t('holderName')} />
                                 </div>
                                 <div className="space-y-2">
-                                    <label htmlFor="phone" className="text-sm font-medium">Telefon</label>
-                                    <Input id="phone" placeholder="0555 555 55 55" />
+                                    <label htmlFor="phone" className="text-sm font-medium">{t('labelPhone')}</label>
+                                    <Input id="phone" placeholder={t('holderPhone')} />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium">E-posta</label>
-                                <Input id="email" type="email" placeholder="ornek@email.com" />
+                                <label htmlFor="email" className="text-sm font-medium">{t('labelEmail')}</label>
+                                <Input id="email" type="email" placeholder={t('holderEmail')} />
                             </div>
 
                             <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium">Mesajınız</label>
-                                <Textarea id="message" placeholder="Projenizden bahsedin..." className="min-h-[120px]" />
+                                <label htmlFor="message" className="text-sm font-medium">{t('labelMessage')}</label>
+                                <Textarea id="message" placeholder={t('holderMessage')} className="min-h-[120px]" />
                             </div>
 
                             <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white">
-                                Gönder
+                                {t('submit')}
                             </Button>
                         </form>
                     </div>

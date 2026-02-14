@@ -11,6 +11,40 @@
         "review3": "Their after-sales support was very attentive. They answered all our questions immediately. Thanks for their interest.",
         "viewAll": "View all Google Reviews"
     },
+    "ProductsPage": {
+        "title": "Our Products",
+        "subtitle": "Special designs that add warmth to your home.",
+        "categories": "Categories",
+        "allProducts": "All Products",
+        "wood": "Wood Burning",
+        "ethanol": "Ethanol",
+        "electric": "Electric",
+        "goToStore": "Go to Online Store"
+    },
+    "PortfolioPage": {
+        "title": "Our References",
+        "subtitle": "Examples of distinguished projects we have completed."
+    },
+    "ContactPage": {
+        "title": "Contact",
+        "subtitle": "Get in touch with us for your projects.",
+        "addressTitle": "Address Information",
+        "address": "Organized Industrial Zone, Blue Street No: 12, Nilufer / BURSA",
+        "contactChannels": "Contact Channels",
+        "phone": "Phone",
+        "email": "Email",
+        "hours": "Working Hours: Mon-Sat 09:00 - 18:00",
+        "formTitle": "Send Us a Message",
+        "labelName": "Name",
+        "holderName": "Your Name Surname",
+        "labelPhone": "Phone",
+        "holderPhone": "0555 555 55 55",
+        "labelEmail": "Email",
+        "holderEmail": "example@email.com",
+        "labelMessage": "Your Message",
+        "holderMessage": "Tell us about your project...",
+        "submit": "Send"
+    },
     "Navigation": {
         "home": "Home",
         "about": "About Us",

@@ -3,7 +3,7 @@
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import ImageWithLoader from '@/components/ui/image-with-loader';
 import { Link } from '@/i18n/routing';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -13,19 +13,22 @@ const FEATURED_PROJECTS = [
         id: 1,
         title: 'Villa Bademli',
         category: 'Modern Odunlu',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80'
+        date: '2023',
+        image: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&q=80'
     },
     {
         id: 2,
         title: 'Ofis Lounge',
         category: 'Etanol Tasarım',
-        image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'
+        date: '2023',
+        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80'
     },
     {
         id: 3,
         title: 'Dağ Evi Projesi',
         category: 'Rustik Taş',
-        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80'
+        date: '2022',
+        image: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80'
     },
 ];
 
@@ -54,7 +57,7 @@ export default function FeaturedProjects() {
                         transition={{ duration: 0.5, delay: idx * 0.2 }}
                         className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-white"
                     >
-                        <Image
+                        <ImageWithLoader
                             src={project.image}
                             alt={project.title}
                             fill

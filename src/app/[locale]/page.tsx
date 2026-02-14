@@ -4,6 +4,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { Button } from '@/components/ui/button';
 import { CATEGORIES } from '@/lib/data';
 import Image from 'next/image';
+import ImageWithLoader from '@/components/ui/image-with-loader';
 import { Link } from '@/i18n/routing';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
@@ -45,7 +46,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {CATEGORIES.map((cat) => (
             <Link key={cat.id} href={cat.href} className="group relative block overflow-hidden rounded-xl aspect-[4/5] shadow-md transition-shadow hover:shadow-xl">
-              <Image
+              <ImageWithLoader
                 src={cat.image}
                 alt={cat.title}
                 fill

@@ -2,18 +2,18 @@
 
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import ImageWithLoader from '@/components/ui/image-with-loader';
 import { motion } from 'framer-motion';
 import { Instagram } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 
 const INSTAGRAM_POSTS = [
-    { id: 1, image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
-    { id: 2, image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
-    { id: 3, image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
-    { id: 4, image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
-    { id: 5, image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
-    { id: 6, image: 'https://images.unsplash.com/photo-1606103323062-8411b0b5550a?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 1, image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 2, image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 3, image: 'https://images.unsplash.com/photo-1520697830682-bbb6e85e2b0b?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 4, image: 'https://images.unsplash.com/photo-1606103323062-8411b0b5550a?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 5, image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
+    { id: 6, image: 'https://images.unsplash.com/photo-1496417206111-c6e268c12f27?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
 ];
 
 export default function InstagramFeed() {
@@ -46,7 +46,7 @@ export default function InstagramFeed() {
                         transition={{ duration: 0.5, delay: idx * 0.1 }}
                         className="group relative aspect-square overflow-hidden rounded-lg bg-muted block"
                     >
-                        <Image
+                        <ImageWithLoader
                             src={post.image}
                             alt="Instagram Post"
                             fill
