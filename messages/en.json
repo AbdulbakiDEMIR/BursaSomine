@@ -2,13 +2,92 @@
     "HomePage": {
         "heroTitle": "A Warm Touch in the Heart of Your Home",
         "heroSubtitle": "Handcrafted wood-burning, ethanol, and electric fireplaces.",
-        "cta": "Visit Store"
+        "cta": "Visit Store",
+        "contactBtn": "Contact Us",
+        "stats": {
+            "years": "Years Experience",
+            "projects": "Completed Projects",
+            "satisfaction": "Customer Satisfaction",
+            "cities": "Provinces Served"
+        },
+        "features": {
+            "qualityTitle": "Superior Quality",
+            "qualityDesc": "We offer long-lasting use guarantee with the most durable materials.",
+            "designTitle": "Custom Design",
+            "designDesc": "We produce the fireplace of your dreams with custom size and design options for your space.",
+            "installTitle": "Professional Installation",
+            "installDesc": "We provide fast and safe installation service with our expert team."
+        },
+        "categories": {
+            "title": "Our Product Collection",
+            "subtitle": "Discover the most suitable fireplace type for your space.",
+            "view": "View",
+            "items": {
+                "wood": {
+                    "title": "Wood Fireplaces",
+                    "description": "Meeting point of traditional warmth and modern design."
+                },
+                "ethanol": {
+                    "title": "Ethanol Fireplaces",
+                    "description": "Smokeless, chimney-free and eco-friendly heating solution."
+                },
+                "electric": {
+                    "title": "Electric Fireplaces",
+                    "description": "Practical and stylish with realistic flame effect."
+                }
+            }
+        },
+        "ctaSection": {
+            "title": "Ready to Change the Atmosphere of Your Home?",
+            "subtitle": "Make the right choice for your project by consulting our expert team.",
+            "button": "Contact Us / Get a Quote"
+        },
+        "featuredProjects": {
+            "title": "Featured Projects",
+            "subtitle": "Some of our inspiring recent works.",
+            "viewAll": "View All",
+            "items": {
+                "1": {
+                    "title": "Villa Bademli",
+                    "category": "Modern Wood"
+                },
+                "2": {
+                    "title": "Office Lounge",
+                    "category": "Ethanol Design"
+                },
+                "3": {
+                    "title": "Mountain House Project",
+                    "category": "Rustic Stone"
+                }
+            }
+        },
+        "process": {
+            "title": "How We Work?",
+            "subtitle": "A 4-step journey to your dream fireplace.",
+            "step1Title": "Discovery and Planning",
+            "step1Desc": "We examine your space, identify your needs, and plan the most suitable solution.",
+            "step2Title": "Design",
+            "step2Desc": "We design your dream fireplace in 3D and present it for your approval.",
+            "step3Title": "Production",
+            "step3Desc": "We start the production process with the highest quality materials in our Bursa factory.",
+            "step4Title": "Installation and Delivery",
+            "step4Desc": "We offer it to your use by performing fast and clean installation with our expert team."
+        },
+        "instagram": {
+            "title": "Follow Us on Instagram",
+            "subtitle": "For our newest projects and inspiring designs @bursa.somine",
+            "follow": "Follow Now"
+        }
     },
     "Reviews": {
         "title": "What Our Customers Say",
+        "subtitle": "Google Reviews",
         "review1": "The electric fireplace we bought added a great atmosphere to our living room. The installation team was very meticulous and clean. Highly recommended.",
+        "date1": "2 months ago",
         "review2": "Product quality is excellent. I was hesitant to order online, but it arrived much better than I expected.",
+        "date2": "1 month ago",
         "review3": "Their after-sales support was very attentive. They answered all our questions immediately. Thanks for their interest.",
+        "date3": "3 weeks ago",
         "viewAll": "View all Google Reviews"
     },
     "ProductsPage": {
@@ -19,11 +98,57 @@
         "wood": "Wood Burning",
         "ethanol": "Ethanol",
         "electric": "Electric",
-        "goToStore": "Go to Online Store"
+        "goToStore": "Go to Online Store",
+        "items": {
+            "1": {
+                "name": "Classic Wood Fireplace",
+                "price": "25.000 TL"
+            },
+            "2": {
+                "name": "Modern Ethanol Model",
+                "price": "18.500 TL"
+            },
+            "3": {
+                "name": "Panoramic Electric",
+                "price": "12.000 TL"
+            },
+            "4": {
+                "name": "Rustic Wood",
+                "price": "28.000 TL"
+            },
+            "5": {
+                "name": "Tabletop Ethanol",
+                "price": "4.500 TL"
+            },
+            "6": {
+                "name": "Built-in Electric",
+                "price": "15.000 TL"
+            }
+        }
     },
     "PortfolioPage": {
         "title": "Our References",
-        "subtitle": "Examples of distinguished projects we have completed."
+        "subtitle": "Examples of distinguished projects we have completed.",
+        "items": {
+            "1": {
+                "title": "Villa Bademli"
+            },
+            "2": {
+                "title": "Office Lounge"
+            },
+            "3": {
+                "title": "Mountain House Project"
+            },
+            "4": {
+                "title": "Modern Apartment"
+            },
+            "5": {
+                "title": "Restaurant Fireplace"
+            },
+            "6": {
+                "title": "Hotel Lobby"
+            }
+        }
     },
     "ContactPage": {
         "title": "Contact",
@@ -54,6 +179,9 @@
     },
     "AboutPage": {
         "title": "About Us",
+        "learnMore": "Learn More",
+        "since": "Since 1990",
+        "tagline": "Trust, Quality, and Aesthetics",
         "historyTitle": "Our History",
         "historyText1": "Bursa Somine is a well-established brand founded in Bursa in 1990. Operating in the fireplace industry since our inception, we have proven our reliability with years of experience.",
         "historyText2": "In 2011, we invested in the electric fireplace sector, taking pioneering steps in this field. Today, we are proud to be a domestic manufacturer producing electric fireplace models of our own design.",
@@ -78,6 +206,7 @@
     "FAQ": {
         "title": "Frequently Asked Questions",
         "subtitle": "Common questions about electric fireplaces.",
+        "viewAll": "View All Questions",
         "q1": "How does an electric fireplace work?",
         "a1": "Electric fireplaces are devices that convert electrical energy into heat, warming your room while providing visual flame effects. Inside, there is a heating mechanism that works to increase the room's temperature. LED lights on the front simulate flame effects, providing an aesthetic appearance.",
         "q2": "What are the advantages of an electric fireplace?",

@@ -40,8 +40,8 @@ export default function Home() {
       {/* Categories Section */}
       <SectionWrapper>
         <SectionHeader
-          title="Ürün Koleksiyonumuz"
-          subtitle="Mekanınıza en uygun şömine tipini keşfedin."
+          title={t('categories.title')}
+          subtitle={t('categories.subtitle')}
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {CATEGORIES.map((cat) => (
@@ -54,10 +54,10 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
               <div className="absolute bottom-0 left-0 p-8 text-white transform transition-transform duration-300 group-hover:-translate-y-2">
-                <h3 className="text-3xl font-bold mb-3">{cat.title}</h3>
-                <p className="text-stone-200 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{cat.description}</p>
+                <h3 className="text-3xl font-bold mb-3">{t(`categories.items.${cat.id}.title` as any)}</h3>
+                <p className="text-stone-200 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{t(`categories.items.${cat.id}.description` as any)}</p>
                 <div className="mt-4 flex items-center gap-2 text-sm font-medium text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
-                  <span>İncele</span>
+                  <span>{t('categories.view')}</span>
                   <span>→</span>
                 </div>
               </div>
@@ -75,12 +75,12 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
         <div className="max-w-3xl mx-auto space-y-8 relative z-10">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Evinizin Havasını Değiştirmeye Hazır Mısınız?</h2>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">{t('ctaSection.title')}</h2>
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto">
-            Uzman ekibimizle görüşerek projeniz için en doğru seçimi yapın.
+            {t('ctaSection.subtitle')}
           </p>
           <Button size="lg" variant="secondary" className="text-lg px-8 py-6 h-auto" asChild>
-            <Link href="/contact">Bize Ulaşın / Teklif Alın</Link>
+            <Link href="/contact">{t('ctaSection.button')}</Link>
           </Button>
         </div>
       </SectionWrapper>

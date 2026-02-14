@@ -79,7 +79,7 @@ export default function FAQSection({ limit }: FAQSectionProps) {
                 <div className="text-center">
                     <Button variant="outline" asChild>
                         <Link href="/faq" className="group">
-                            Tüm Soruları Gör <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            {t('viewAll')} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
                 </div>

@@ -38,7 +38,7 @@ export default function AboutSummary() {
                     <div className="pt-4">
                         <Button size="lg" variant="outline" className="text-orange-600 border-orange-200 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 group" asChild>
                             <Link href="/about" className="flex items-center gap-2">
-                                Daha Fazla Bilgi
+                                {t('learnMore')}
                                 <span className="block transition-transform group-hover:translate-x-1">→</span>
                             </Link>
                         </Button>
@@ -62,8 +62,8 @@ export default function AboutSummary() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
 
                     <div className="absolute bottom-8 left-8 text-white z-10">
-                        <p className="font-bold text-3xl mb-1">1990'dan Beri</p>
-                        <p className="text-lg text-white/80 font-light">Güven, Kalite ve Estetik</p>
+                        <p className="font-bold text-3xl mb-1">{t('since')}</p>
+                        <p className="text-lg text-white/80 font-light">{t('tagline')}</p>
                     </div>
 
                     {/* Decorative Corner */}

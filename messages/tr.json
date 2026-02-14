@@ -2,7 +2,81 @@
     "HomePage": {
         "heroTitle": "Evinizin Kalbinde Sıcak Bir Dokunuş",
         "heroSubtitle": "Mükemmel işçilikle üretilen odunlu, etanollü ve elektrikli şömineler.",
-        "cta": "Mağazayı Ziyaret Et"
+        "cta": "Mağazayı Ziyaret Et",
+        "stats": {
+            "years": "Yıllık Tecrübe",
+            "projects": "Tamamlanan Proje",
+            "satisfaction": "Müşteri Memnuniyeti",
+            "cities": "İle Hizmet"
+        },
+        "features": {
+            "qualityTitle": "Üstün Kalite",
+            "qualityDesc": "En dayanıklı malzemelerle uzun ömürlü kullanım garantisi sunuyoruz.",
+            "designTitle": "Özel Tasarım",
+            "designDesc": "Mekanınıza özel ölçü ve tasarım seçenekleri ile hayalinizdeki şömineyi üretiyoruz.",
+            "installTitle": "Profesyonel Montaj",
+            "installDesc": "Uzman ekibimizle hızlı ve güvenli kurulum hizmeti sağlıyoruz."
+        },
+        "categories": {
+            "title": "Ürün Koleksiyonumuz",
+            "subtitle": "Mekanınıza en uygun şömine tipini keşfedin.",
+            "view": "İncele",
+            "items": {
+                "wood": {
+                    "title": "Odunlu Şömineler",
+                    "description": "Geleneksel sıcaklık ve modern tasarımın buluştuğu nokta."
+                },
+                "ethanol": {
+                    "title": "Etanollü Şömineler",
+                    "description": "Dumansız, bacasız ve çevre dostu ısınma çözümü."
+                },
+                "electric": {
+                    "title": "Elektrikli Şömineler",
+                    "description": "Gerçekçi alev efekti ile pratik ve şık."
+                }
+            }
+        },
+        "ctaSection": {
+            "title": "Evinizin Havasını Değiştirmeye Hazır Mısınız?",
+            "subtitle": "Uzman ekibimizle görüşerek projeniz için en doğru seçimi yapın.",
+            "button": "Bize Ulaşın / Teklif Alın"
+        },
+        "featuredProjects": {
+            "title": "Seçkin Projelerimiz",
+            "subtitle": "İlham veren son çalışmalarımızdan bazıları.",
+            "viewAll": "Tümünü Gör",
+            "items": {
+                "1": {
+                    "title": "Villa Bademli",
+                    "category": "Modern Odunlu"
+                },
+                "2": {
+                    "title": "Ofis Lounge",
+                    "category": "Etanol Tasarım"
+                },
+                "3": {
+                    "title": "Dağ Evi Projesi",
+                    "category": "Rustik Taş"
+                }
+            }
+        },
+        "process": {
+            "title": "Nasıl Çalışıyoruz?",
+            "subtitle": "Hayalinizdeki şömineye giden 4 adımlık yolculuk.",
+            "step1Title": "Keşif ve Planlama",
+            "step1Desc": "Mekanınızı inceliyor, ihtiyaçlarınızı belirliyor ve en uygun çözümü planlıyoruz.",
+            "step2Title": "Tasarım",
+            "step2Desc": "Hayalinizdeki şömineyi 3D olarak tasarlıyor ve onayınıza sunuyoruz.",
+            "step3Title": "Üretim",
+            "step3Desc": "Bursa fabrikamızda, en kaliteli malzemelerle üretim sürecini başlatıyoruz.",
+            "step4Title": "Montaj ve Teslim",
+            "step4Desc": "Uzman ekibimizle hızlı ve temiz montaj yaparak kullanımınıza sunuyoruz."
+        },
+        "instagram": {
+            "title": "Bizi Instagram'da Takip Edin",
+            "subtitle": "En yeni projelerimiz ve ilham veren tasarımlarımız için @bursa.somine",
+            "follow": "Hemen Takip Et"
+        }
     },
     "Reviews": {
         "title": "Müşterilerimiz Ne Diyor?",
@@ -19,11 +93,57 @@
         "wood": "Odunlu",
         "ethanol": "Etanollü",
         "electric": "Elektrikli",
-        "goToStore": "Online Mağazaya Git"
+        "goToStore": "Online Mağazaya Git",
+        "items": {
+            "1": {
+                "name": "Klasik Odunlu Şömine",
+                "price": "25.000 TL"
+            },
+            "2": {
+                "name": "Modern Etanollü Model",
+                "price": "18.500 TL"
+            },
+            "3": {
+                "name": "Panoramik Elektrikli",
+                "price": "12.000 TL"
+            },
+            "4": {
+                "name": "Rustik Odunlu",
+                "price": "28.000 TL"
+            },
+            "5": {
+                "name": "Masaüstü Etanollü",
+                "price": "4.500 TL"
+            },
+            "6": {
+                "name": "Gömme Elektrikli",
+                "price": "15.000 TL"
+            }
+        }
     },
     "PortfolioPage": {
         "title": "Referanslarımız",
-        "subtitle": "Tamamladığımız seçkin projelerden örnekler."
+        "subtitle": "Tamamladığımız seçkin projelerden örnekler.",
+        "items": {
+            "1": {
+                "title": "Villa Bademli"
+            },
+            "2": {
+                "title": "Ofis Lounge"
+            },
+            "3": {
+                "title": "Dağ Evi Projesi"
+            },
+            "4": {
+                "title": "Modern Daire"
+            },
+            "5": {
+                "title": "Restaurant Şömine"
+            },
+            "6": {
+                "title": "Otel Lobisi"
+            }
+        }
     },
     "ContactPage": {
         "title": "İletişim",
@@ -78,6 +198,7 @@
     "FAQ": {
         "title": "Sıkça Sorulan Sorular",
         "subtitle": "Elektrikli şömineler hakkında merak edilenler.",
+        "viewAll": "Tüm Soruları Gör",
         "q1": "Elektrikli şömine nasıl çalışır?",
         "a1": "Elektrikli şömineler, elektrik enerjisini ısıya dönüştürerek, odanızı ısıtan ve görsel alev efektleri sunan cihazlardır. İçinde bir ısıtıcı mekanizma bulunur ve bu mekanizma, odanın sıcaklığını artırmak için çalışır. Şöminenin ön yüzeyinde bulunan LED ışıklar, alev efektlerini simüle ederek estetik bir görüntü sağlar.",
         "q2": "Elektrikli şöminenin avantajları nelerdir?",

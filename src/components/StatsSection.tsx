@@ -3,14 +3,18 @@
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { motion } from 'framer-motion';
 
-const STATS = [
-    { value: "20+", label: "Yıllık Tecrübe" },
-    { value: "500+", label: "Tamamlanan Proje" },
-    { value: "%100", label: "Müşteri Memnuniyeti" },
-    { value: "81", label: "İle Hizmet" },
-];
+import { useTranslations } from 'next-intl';
 
 export default function StatsSection() {
+    const t = useTranslations('HomePage.stats');
+
+    const STATS = [
+        { value: "20+", label: t('years') },
+        { value: "500+", label: t('projects') },
+        { value: "%100", label: t('satisfaction') },
+        { value: "81", label: t('cities') },
+    ];
+
     return (
         <SectionWrapper className="bg-primary text-primary-foreground py-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-primary-foreground/10 text-center">

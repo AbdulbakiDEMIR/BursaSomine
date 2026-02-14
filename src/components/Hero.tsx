@@ -62,7 +62,7 @@ export default function Hero() {
                             <Link href="/products?category=wood">{t('cta')}</Link>
                         </Button>
                         <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm" asChild>
-                            <Link href="/contact">İletişime Geç</Link>
+                            <Link href="/contact">{t('contactBtn')}</Link>
                         </Button>
                     </motion.div>
                 </div>

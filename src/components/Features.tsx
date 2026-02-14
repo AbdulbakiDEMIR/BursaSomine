@@ -4,25 +4,29 @@ import { SectionWrapper } from '@/components/SectionWrapper';
 import { motion } from 'framer-motion';
 import { Flame, ShieldCheck, Ruler } from 'lucide-react';
 
-const FEATURES = [
-    {
-        icon: ShieldCheck,
-        title: 'Üstün Kalite',
-        description: 'En dayanıklı malzemelerle uzun ömürlü kullanım garantisi sunuyoruz.',
-    },
-    {
-        icon: Ruler,
-        title: 'Özel Tasarım',
-        description: 'Mekanınıza özel ölçü ve tasarım seçenekleri ile hayalinizdeki şömineyi üretiyoruz.',
-    },
-    {
-        icon: Flame,
-        title: 'Profesyonel Montaj',
-        description: 'Uzman ekibimizle hızlı ve güvenli kurulum hizmeti sağlıyoruz.',
-    }
-];
+import { useTranslations } from 'next-intl';
 
 export default function Features() {
+    const t = useTranslations('HomePage.features');
+
+    const FEATURES = [
+        {
+            icon: ShieldCheck,
+            title: t('qualityTitle'),
+            description: t('qualityDesc'),
+        },
+        {
+            icon: Ruler,
+            title: t('designTitle'),
+            description: t('designDesc'),
+        },
+        {
+            icon: Flame,
+            title: t('installTitle'),
+            description: t('installDesc'),
+        }
+    ];
+
     return (
         <SectionWrapper className="relative bg-white overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">

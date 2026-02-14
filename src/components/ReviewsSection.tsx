@@ -13,21 +13,21 @@ export default function ReviewsSection() {
             id: 1,
             author: "Ahmet Yılmaz",
             rating: 5,
-            date: "2 ay önce",
+            date: t('date1'),
             text: t('review1')
         },
         {
             id: 2,
             author: "Zeynep Kaya",
             rating: 5,
-            date: "1 ay önce",
+            date: t('date2'),
             text: t('review2')
         },
         {
             id: 3,
             author: "Murat Demir",
             rating: 5,
-            date: "3 hafta önce",
+            date: t('date3'),
             text: t('review3')
         }
     ];
@@ -46,7 +46,7 @@ export default function ReviewsSection() {
                         ))}
                     </div>
                 </div>
-                <p className="text-muted-foreground">Google Yorumları</p>
+                <p className="text-muted-foreground">{t('subtitle')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

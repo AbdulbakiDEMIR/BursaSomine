@@ -53,7 +53,7 @@ export default function ProductsPage() {
                                 </div>
                                 <div className="p-5 flex flex-col flex-1">
                                     <div className="mb-4">
-                                        <h3 className="font-bold text-lg text-foreground mb-1">{product.name}</h3>
+                                        <h3 className="font-bold text-lg text-foreground mb-1">{t(`items.${product.id}.name` as any)}</h3>
                                         <p className="text-muted-foreground text-sm capitalize">{t(product.category as any)}</p>
                                     </div>
 

@@ -5,35 +5,39 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { motion } from 'framer-motion';
 import { Search, PenTool, Hammer, Home } from 'lucide-react';
 
-const STEPS = [
-    {
-        icon: Search,
-        title: 'Keşif ve Planlama',
-        description: 'Mekanınızı inceliyor, ihtiyaçlarınızı belirliyor ve en uygun çözümü planlıyoruz.',
-    },
-    {
-        icon: PenTool,
-        title: 'Tasarım',
-        description: 'Hayalinizdeki şömineyi 3D olarak tasarlıyor ve onayınıza sunuyoruz.',
-    },
-    {
-        icon: Hammer,
-        title: 'Üretim',
-        description: 'Bursa fabrikamızda, en kaliteli malzemelerle üretim sürecini başlatıyoruz.',
-    },
-    {
-        icon: Home,
-        title: 'Montaj ve Teslim',
-        description: 'Uzman ekibimizle hızlı ve temiz montaj yaparak kullanımınıza sunuyoruz.',
-    }
-];
+import { useTranslations } from 'next-intl';
 
 export default function ProcessSection() {
+    const t = useTranslations('HomePage.process');
+
+    const STEPS = [
+        {
+            icon: Search,
+            title: t('step1Title'),
+            description: t('step1Desc'),
+        },
+        {
+            icon: PenTool,
+            title: t('step2Title'),
+            description: t('step2Desc'),
+        },
+        {
+            icon: Hammer,
+            title: t('step3Title'),
+            description: t('step3Desc'),
+        },
+        {
+            icon: Home,
+            title: t('step4Title'),
+            description: t('step4Desc'),
+        }
+    ];
+
     return (
         <SectionWrapper className="bg-secondary/30">
             <SectionHeader
-                title="Nasıl Çalışıyoruz?"
-                subtitle="Hayalinizdeki şömineye giden 4 adımlık yolculuk."
+                title={t('title')}
+                subtitle={t('subtitle')}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
                 {/* Connector Line (Desktop) */}
