@@ -12,7 +12,7 @@ const FEATURED_PROJECTS = [
     {
         id: 1,
         title: 'Villa Bademli',
-        category: 'Modern Odunlu',
+        category: 'Modern Bademli',
         date: '2023',
         image: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&q=80'
     },
