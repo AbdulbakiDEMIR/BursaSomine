@@ -41,8 +41,8 @@ export default function ProductsPage() {
                     {/* Product Grid */}
                     <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {PRODUCTS.map((product) => (
-                            <div key={product.id} className="group flex flex-col border border-border rounded-lg overflow-hidden bg-background shadow-sm hover:shadow-md transition-shadow">
-                                <div className="relative aspect-square overflow-hidden bg-muted">
+                            <div key={product.id} className="group flex flex-col border border-border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                                <div className="relative aspect-square overflow-hidden bg-secondary/20">
                                     <Image
                                         src={product.image}
                                         alt={product.name}
@@ -50,13 +50,17 @@ export default function ProductsPage() {
                                         className="object-cover transition-transform group-hover:scale-105"
                                     />
                                 </div>
-                                <div className="p-4 flex flex-col flex-1">
-                                    <h3 className="font-semibold text-lg">{product.name}</h3>
-                                    <p className="text-muted-foreground text-sm mb-4 capitalize">{product.category}</p>
-                                    <div className="mt-auto flex items-center justify-between">
-                                        <span className="font-bold text-primary">{product.price}</span>
-                                        <Button size="sm" asChild>
-                                            <a href="https://magaza.bursasomine.com" target="_blank" rel="noopener noreferrer">Satın Al</a>
+                                <div className="p-5 flex flex-col flex-1">
+                                    <div className="mb-4">
+                                        <h3 className="font-bold text-lg text-foreground mb-1">{product.name}</h3>
+                                        <p className="text-muted-foreground text-sm capitalize">{product.category}</p>
+                                    </div>
+
+                                    <div className="mt-auto">
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white shadow-sm group-hover:shadow" asChild>
+                                            <a href="https://magaza.bursasomine.com" target="_blank" rel="noopener noreferrer">
+                                                Online Mağazaya Git
+                                            </a>
                                         </Button>
                                     </div>
                                 </div>

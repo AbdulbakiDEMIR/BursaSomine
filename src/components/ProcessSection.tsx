@@ -30,7 +30,7 @@ const STEPS = [
 
 export default function ProcessSection() {
     return (
-        <SectionWrapper className="bg-muted/30">
+        <SectionWrapper className="bg-secondary/30">
             <SectionHeader
                 title="Nasıl Çalışıyoruz?"
                 subtitle="Hayalinizdeki şömineye giden 4 adımlık yolculuk."

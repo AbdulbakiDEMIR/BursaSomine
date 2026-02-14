@@ -4,6 +4,13 @@
         "heroSubtitle": "Handcrafted wood-burning, ethanol, and electric fireplaces.",
         "cta": "Visit Store"
     },
+    "Reviews": {
+        "title": "What Our Customers Say",
+        "review1": "The electric fireplace we bought added a great atmosphere to our living room. The installation team was very meticulous and clean. Highly recommended.",
+        "review2": "Product quality is excellent. I was hesitant to order online, but it arrived much better than I expected.",
+        "review3": "Their after-sales support was very attentive. They answered all our questions immediately. Thanks for their interest.",
+        "viewAll": "View all Google Reviews"
+    },
     "Navigation": {
         "home": "Home",
         "about": "About Us",

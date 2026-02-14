@@ -18,8 +18,8 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2 group">
-                            <div className="p-2 bg-primary rounded-lg group-hover:bg-primary/90 transition-colors">
-                                <Flame className="w-6 h-6 text-primary-foreground" />
+                            <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                                <Flame className="w-6 h-6 text-accent" />
                             </div>
                             <span className="text-xl font-bold tracking-tight">Bursa Şömine</span>
                         </Link>

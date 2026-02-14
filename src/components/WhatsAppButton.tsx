@@ -26,7 +26,7 @@ export default function WhatsAppButton() {
             <MessageCircle className="w-8 h-8 text-white relative z-10" />
 
             {/* Tooltip */}
-            <span className="absolute right-full mr-3 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            <span className="absolute right-full mr-3 px-2 py-1 bg-primary/90 text-primary-foreground text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 WhatsApp Hattı
             </span>
         </motion.a>

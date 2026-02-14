@@ -11,7 +11,7 @@ export default function AboutSummary() {
     const t = useTranslations('AboutPage');
 
     return (
-        <SectionWrapper>
+        <SectionWrapper className="bg-secondary/30">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Text Content */}
                 <motion.div

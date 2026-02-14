@@ -20,7 +20,7 @@ export default function InstagramFeed() {
     return (
         <SectionWrapper>
             <div className="flex flex-col items-center mb-10 text-center">
-                <div className="p-3 bg-pink-100 rounded-full text-pink-600 mb-4">
+                <div className="p-3 bg-orange-100 rounded-full text-orange-600 mb-4">
                     <Instagram className="w-8 h-8" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary mb-2">Bizi Instagram'da Takip Edin</h2>
@@ -52,7 +52,7 @@ export default function InstagramFeed() {
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <Instagram className="w-8 h-8 text-white" />
                         </div>
                     </motion.a>

@@ -30,7 +30,7 @@ export default function FAQSection({ limit }: FAQSectionProps) {
     const visibleFaqs = limit ? FAQS.slice(0, limit) : FAQS;
 
     return (
-        <SectionWrapper className="bg-muted/30">
+        <SectionWrapper className="bg-secondary/30">
             <SectionHeader title={t('title')} subtitle={t('subtitle')} />
 
             <div className="max-w-3xl mx-auto mb-10">

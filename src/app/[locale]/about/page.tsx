@@ -87,7 +87,7 @@ export default function AboutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
                         <div className="flex-shrink-0">
-                            <Trophy className="w-10 h-10 text-orange-500" />
+                            <Trophy className="w-10 h-10" />
                         </div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value1')}</h4>
@@ -96,7 +96,7 @@ export default function AboutPage() {
                     </div>
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
                         <div className="flex-shrink-0">
-                            <Heart className="w-10 h-10 text-orange-500" />
+                            <Heart className="w-10 h-10" />
                         </div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value2')}</h4>
@@ -105,7 +105,7 @@ export default function AboutPage() {
                     </div>
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
                         <div className="flex-shrink-0">
-                            <ShieldCheck className="w-10 h-10 text-orange-500" />
+                            <ShieldCheck className="w-10 h-10" />
                         </div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value3')}</h4>

@@ -4,6 +4,13 @@
         "heroSubtitle": "Mükemmel işçilikle üretilen odunlu, etanollü ve elektrikli şömineler.",
         "cta": "Mağazayı Ziyaret Et"
     },
+    "Reviews": {
+        "title": "Müşterilerimiz Ne Diyor?",
+        "review1": "Salonumuza aldığımız elektrikli şömine harika bir hava kattı. Kurulum ekibi çok titiz ve temiz çalıştı. Kesinlikle tavsiye ederim.",
+        "review2": "Ürün kalitesi mükemmel. İnternet üzerinden sipariş verirken tereddüt etmiştim ama beklediğimden çok daha iyi geldi.",
+        "review3": "Satış sonrası destekleri çok ilgiliydi. Her sorumuza anında cevap verdiler. İlgileri için teşekkürler.",
+        "viewAll": "Tüm Google Yorumlarını Gör"
+    },
     "Navigation": {
         "home": "Anasayfa",
         "about": "Hakkımızda",

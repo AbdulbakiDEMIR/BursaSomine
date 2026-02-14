@@ -31,7 +31,7 @@ const FEATURED_PROJECTS = [
 
 export default function FeaturedProjects() {
     return (
-        <SectionWrapper>
+        <SectionWrapper className="bg-secondary/30">
             <div className="flex flex-col md:flex-row justify-between items-center mb-12">
                 <div className="text-center md:text-left mb-6 md:mb-0">
                     <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary">Seçkin Projelerimiz</h2>
@@ -52,7 +52,7 @@ export default function FeaturedProjects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: idx * 0.2 }}
-                        className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-muted"
+                        className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-white"
                     >
                         <Image
                             src={project.image}
@@ -60,9 +60,9 @@ export default function FeaturedProjects() {
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
                         <div className="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
-                            <p className="text-sm font-medium text-orange-400 mb-1">{project.category}</p>
+                            <p className="text-sm font-medium text-accent mb-1">{project.category}</p>
                             <h3 className="text-xl font-bold">{project.title}</h3>
                         </div>
                     </motion.div>

@@ -6,7 +6,7 @@ export default function Navbar() {
     const t = useTranslations('Navigation');
 
     return (
-        <header className="sticky top-0 z-50 w-full flex justify-center border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-50 w-full flex justify-center border-b border-border bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
             <div className="container flex h-16 items-center justify-between">
                 <div className="mr-4 hidden md:flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">

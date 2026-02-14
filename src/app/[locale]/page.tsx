@@ -13,6 +13,7 @@ import FeaturedProjects from '@/components/FeaturedProjects';
 import AboutSummary from '@/components/AboutSummary';
 import InstagramFeed from '@/components/InstagramFeed';
 import FAQSection from '@/components/FAQSection';
+import ReviewsSection from '@/components/ReviewsSection';
 
 export default function Home() {
   const t = useTranslations('HomePage');
@@ -29,6 +30,8 @@ export default function Home() {
       <Features />
 
       <FeaturedProjects />
+
+      <ReviewsSection />
 
       <ProcessSection />
 
@@ -48,11 +51,11 @@ export default function Home() {
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
               <div className="absolute bottom-0 left-0 p-8 text-white transform transition-transform duration-300 group-hover:-translate-y-2">
                 <h3 className="text-3xl font-bold mb-3">{cat.title}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{cat.description}</p>
-                <div className="mt-4 flex items-center gap-2 text-sm font-medium text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
+                <p className="text-stone-200 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{cat.description}</p>
+                <div className="mt-4 flex items-center gap-2 text-sm font-medium text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
                   <span>İncele</span>
                   <span>→</span>
                 </div>
@@ -68,7 +71,7 @@ export default function Home() {
       {/* CTA Section */}
       <SectionWrapper className="bg-primary text-primary-foreground text-center py-24 relative overflow-hidden">
         {/* Subtle pattern or gradient could go here */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
         <div className="max-w-3xl mx-auto space-y-8 relative z-10">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Evinizin Havasını Değiştirmeye Hazır Mısınız?</h2>

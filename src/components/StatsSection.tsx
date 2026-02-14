@@ -23,8 +23,8 @@ export default function StatsSection() {
                         transition={{ duration: 0.5, delay: idx * 0.1 }}
                         className="flex flex-col items-center space-y-2 px-4"
                     >
-                        <span className="text-4xl md:text-5xl font-bold text-orange-500">{stat.value}</span>
-                        <span className="text-sm md:text-base text-primary-foreground/80 font-light">{stat.label}</span>
+                        <span className="text-4xl md:text-5xl font-bold text-primary-foreground/90">{stat.value}</span>
+                        <span className="text-sm md:text-base text-primary-foreground/60 font-medium">{stat.label}</span>
                     </motion.div>
                 ))}
             </div>

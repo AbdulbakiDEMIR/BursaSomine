@@ -24,7 +24,7 @@ const FEATURES = [
 
 export default function Features() {
     return (
-        <SectionWrapper className="relative bg-muted/30 overflow-hidden">
+        <SectionWrapper className="relative bg-white overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
                 {FEATURES.map((feature, idx) => (
                     <motion.div
@@ -35,7 +35,7 @@ export default function Features() {
                         transition={{ duration: 0.5, delay: idx * 0.2 }}
                         className="group flex flex-col items-center text-center space-y-4 p-8 rounded-2xl bg-background/50 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all hover:-translate-y-1"
                     >
-                        <div className="p-4 rounded-full bg-orange-100/50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <div className="p-4 rounded-full bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
                             <feature.icon className="w-8 h-8" />
                         </div>
                         <h3 className="text-xl font-bold text-primary">{feature.title}</h3>
