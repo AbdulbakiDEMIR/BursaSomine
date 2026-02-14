@@ -11,6 +11,40 @@
         "review3": "Satış sonrası destekleri çok ilgiliydi. Her sorumuza anında cevap verdiler. İlgileri için teşekkürler.",
         "viewAll": "Tüm Google Yorumlarını Gör"
     },
+    "ProductsPage": {
+        "title": "Ürünlerimiz",
+        "subtitle": "Evinize sıcaklık katacak özel tasarımlarımız.",
+        "categories": "Kategoriler",
+        "allProducts": "Tüm Ürünler",
+        "wood": "Odunlu",
+        "ethanol": "Etanollü",
+        "electric": "Elektrikli",
+        "goToStore": "Online Mağazaya Git"
+    },
+    "PortfolioPage": {
+        "title": "Referanslarımız",
+        "subtitle": "Tamamladığımız seçkin projelerden örnekler."
+    },
+    "ContactPage": {
+        "title": "İletişim",
+        "subtitle": "Projeleriniz için bizimle iletişime geçin.",
+        "addressTitle": "Adres Bilgileri",
+        "address": "Organize Sanayi Bölgesi, Mavi Cadde No: 12, Nilüfer / BURSA",
+        "contactChannels": "İletişim Kanalları",
+        "phone": "Telefon",
+        "email": "E-posta",
+        "hours": "Çalışma Saatleri: Pzt-Cmt 09:00 - 18:00",
+        "formTitle": "Bize Mesaj Gönderin",
+        "labelName": "Adınız",
+        "holderName": "Adınız Soyadınız",
+        "labelPhone": "Telefon",
+        "holderPhone": "0555 555 55 55",
+        "labelEmail": "E-posta",
+        "holderEmail": "ornek@email.com",
+        "labelMessage": "Mesajınız",
+        "holderMessage": "Projenizden bahsedin...",
+        "submit": "Gönder"
+    },
     "Navigation": {
         "home": "Anasayfa",
         "about": "Hakkımızda",
