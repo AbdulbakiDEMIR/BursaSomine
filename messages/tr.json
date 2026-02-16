@@ -3,6 +3,7 @@
         "heroTitle": "Evinizin Kalbinde Sıcak Bir Dokunuş",
         "heroSubtitle": "Mükemmel işçilikle üretilen odunlu, etanollü ve elektrikli şömineler.",
         "cta": "Mağazayı Ziyaret Et",
+        "contactBtn": "Bize Ulaşın",
         "stats": {
             "years": "Yıllık Tecrübe",
             "projects": "Tamamlanan Proje",
@@ -80,9 +81,13 @@
     },
     "Reviews": {
         "title": "Müşterilerimiz Ne Diyor?",
+        "subtitle": "Google Reviews",
         "review1": "Salonumuza aldığımız elektrikli şömine harika bir hava kattı. Kurulum ekibi çok titiz ve temiz çalıştı. Kesinlikle tavsiye ederim.",
+        "date1": "2 ay",
         "review2": "Ürün kalitesi mükemmel. İnternet üzerinden sipariş verirken tereddüt etmiştim ama beklediğimden çok daha iyi geldi.",
+        "date2": "1 ay",
         "review3": "Satış sonrası destekleri çok ilgiliydi. Her sorumuza anında cevap verdiler. İlgileri için teşekkürler.",
+        "date3": "3 hafta",
         "viewAll": "Tüm Google Yorumlarını Gör"
     },
     "ProductsPage": {
@@ -174,6 +179,7 @@
     },
     "AboutPage": {
         "title": "Hakkımızda",
+        "learnMore": "Daha Fazla",
         "historyTitle": "Tarihçemiz",
         "historyText1": "Bursa Şömine, 1990 yılında Bursa'da kurulmuş köklü bir markadır. Kuruluşundan bu yana şömine sektöründe faaliyet gösteren firmamız, yılların tecrübesiyle sektörde güvenilirliğini kanıtlamıştır.",
         "historyText2": "2011 yılında elektrikli şömine alanına yatırım yaparak, bu alanda da öncü adımlar atmaya başladık. Bugün, tamamen kendi tasarımımız olan elektrikli şömine modelleriyle üretim yapan yerli bir marka olmanın gururunu yaşıyoruz.",
