@@ -99,6 +99,7 @@
         "ethanol": "Ethanol",
         "electric": "Electric",
         "goToStore": "Go to Online Store",
+        "noProducts": "No products found.",
         "items": {
             "1": {
                 "name": "Classic Wood Fireplace",

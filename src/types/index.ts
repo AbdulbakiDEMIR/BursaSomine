@@ -1,0 +1,74 @@
+export type LocalizedString = {
+    tr: string;
+    en: string;
+};
+
+export interface Product {
+    id?: string;
+    name: LocalizedString;
+    description: LocalizedString;
+    price: string;
+    category: 'wood' | 'ethanol' | 'electric';
+    isFeatured: boolean;
+    createdAt: string;
+    images?: string[];
+}
+
+export interface Category {
+    id: string; // 'wood', 'ethanol', 'electric'
+    title: LocalizedString;
+    description: LocalizedString;
+    image: string;
+}
+
+export interface HomePageData {
+    hero: {
+        title: LocalizedString;
+        subtitle: LocalizedString;
+        ctaText: LocalizedString;
+    };
+    stats: {
+        yearsLabel: LocalizedString;
+        yearsValue: number;
+        projectsLabel: LocalizedString;
+        projectsValue: number;
+        satisfactionLabel: LocalizedString;
+        satisfactionValue: number;
+        citiesLabel: LocalizedString;
+        citiesValue: number;
+    };
+    features: Array<{
+        title: LocalizedString;
+        description: LocalizedString;
+    }>;
+}
+
+export interface AboutPageData {
+    history: LocalizedString;
+    vision: LocalizedString;
+    mission: {
+        tr: string[];
+        en: string[];
+    };
+}
+
+export interface FaqPageData {
+    faqs: Array<{
+        question: LocalizedString;
+        answer: LocalizedString;
+    }>;
+}
+
+export interface SiteSettings {
+    brandName: string;
+    contact: {
+        address: string;
+        phone: string;
+        email: string;
+        hours: LocalizedString;
+    };
+    socialMedia: {
+        instagram: string;
+        facebook?: string;
+    };
+}

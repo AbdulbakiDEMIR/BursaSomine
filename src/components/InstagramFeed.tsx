@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import ImageWithLoader from '@/components/ui/image-with-loader';
 import { motion } from 'framer-motion';
 import { Instagram } from 'lucide-react';
-import { Link } from '@/i18n/routing';
 
 const INSTAGRAM_POSTS = [
     { id: 1, image: 'https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
@@ -16,25 +15,25 @@ const INSTAGRAM_POSTS = [
     { id: 6, image: 'https://images.unsplash.com/photo-1496417206111-c6e268c12f27?auto=format&fit=crop&q=80', link: 'https://www.instagram.com/bursa.somine/' },
 ];
 
-import { useTranslations } from 'next-intl';
+interface InstagramFeedProps {
+    title: string;
+    subtitle: string;
+    followText: string;
+}
 
-// ...
-
-export default function InstagramFeed() {
-    const t = useTranslations('HomePage.instagram');
-
+export default function InstagramFeed({ title, subtitle, followText }: InstagramFeedProps) {
     return (
         <SectionWrapper>
             <div className="flex flex-col items-center mb-10 text-center">
                 <div className="p-3 bg-orange-100 rounded-full text-orange-600 mb-4">
                     <Instagram className="w-8 h-8" />
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary mb-2">{t('title')}</h2>
-                <p className="text-lg text-muted-foreground mb-6">{t('subtitle')}</p>
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary mb-2">{title}</h2>
+                <p className="text-lg text-muted-foreground mb-6">{subtitle}</p>
 
                 <Button variant="outline" className="gap-2" asChild>
                     <a href="https://www.instagram.com/bursa.somine/" target="_blank" rel="noopener noreferrer">
-                        {t('follow')} <span className="text-xs ml-1">→</span>
+                        {followText} <span className="text-xs ml-1">→</span>
                     </a>
                 </Button>
             </div>

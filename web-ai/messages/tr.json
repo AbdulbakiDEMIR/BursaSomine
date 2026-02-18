@@ -1,0 +1,273 @@
+{
+    "HomePage": {
+        "heroTitle": "Evinizin Kalbinde Sıcak Bir Dokunuş",
+        "heroSubtitle": "Mükemmel işçilikle üretilen odunlu, etanollü ve elektrikli şömineler.",
+        "cta": "Mağazayı Ziyaret Et",
+        "contactBtn": "Bize Ulaşın",
+        "stats": {
+            "years": "Yıllık Tecrübe",
+            "projects": "Tamamlanan Proje",
+            "satisfaction": "Müşteri Memnuniyeti",
+            "cities": "İle Hizmet"
+        },
+        "features": {
+            "qualityTitle": "Üstün Kalite",
+            "qualityDesc": "En dayanıklı malzemelerle uzun ömürlü kullanım garantisi sunuyoruz.",
+            "designTitle": "Özel Tasarım",
+            "designDesc": "Mekanınıza özel ölçü ve tasarım seçenekleri ile hayalinizdeki şömineyi üretiyoruz.",
+            "installTitle": "Profesyonel Montaj",
+            "installDesc": "Uzman ekibimizle hızlı ve güvenli kurulum hizmeti sağlıyoruz."
+        },
+        "categories": {
+            "title": "Ürün Koleksiyonumuz",
+            "subtitle": "Mekanınıza en uygun şömine tipini keşfedin.",
+            "view": "İncele",
+            "items": {
+                "wood": {
+                    "title": "Odunlu Şömineler",
+                    "description": "Geleneksel sıcaklık ve modern tasarımın buluştuğu nokta."
+                },
+                "ethanol": {
+                    "title": "Etanollü Şömineler",
+                    "description": "Dumansız, bacasız ve çevre dostu ısınma çözümü."
+                },
+                "electric": {
+                    "title": "Elektrikli Şömineler",
+                    "description": "Gerçekçi alev efekti ile pratik ve şık."
+                }
+            }
+        },
+        "ctaSection": {
+            "title": "Evinizin Havasını Değiştirmeye Hazır Mısınız?",
+            "subtitle": "Uzman ekibimizle görüşerek projeniz için en doğru seçimi yapın.",
+            "button": "Bize Ulaşın / Teklif Alın"
+        },
+        "featuredProjects": {
+            "title": "Seçkin Projelerimiz",
+            "subtitle": "İlham veren son çalışmalarımızdan bazıları.",
+            "viewAll": "Tümünü Gör",
+            "items": {
+                "1": {
+                    "title": "Villa Bademli",
+                    "category": "Modern Odunlu"
+                },
+                "2": {
+                    "title": "Ofis Lounge",
+                    "category": "Etanol Tasarım"
+                },
+                "3": {
+                    "title": "Dağ Evi Projesi",
+                    "category": "Rustik Taş"
+                }
+            }
+        },
+        "process": {
+            "title": "Nasıl Çalışıyoruz?",
+            "subtitle": "Hayalinizdeki şömineye giden 4 adımlık yolculuk.",
+            "step1Title": "Keşif ve Planlama",
+            "step1Desc": "Mekanınızı inceliyor, ihtiyaçlarınızı belirliyor ve en uygun çözümü planlıyoruz.",
+            "step2Title": "Tasarım",
+            "step2Desc": "Hayalinizdeki şömineyi 3D olarak tasarlıyor ve onayınıza sunuyoruz.",
+            "step3Title": "Üretim",
+            "step3Desc": "Bursa fabrikamızda, en kaliteli malzemelerle üretim sürecini başlatıyoruz.",
+            "step4Title": "Montaj ve Teslim",
+            "step4Desc": "Uzman ekibimizle hızlı ve temiz montaj yaparak kullanımınıza sunuyoruz."
+        },
+        "instagram": {
+            "title": "Bizi Instagram'da Takip Edin",
+            "subtitle": "En yeni projelerimiz ve ilham veren tasarımlarımız için @bursa.somine",
+            "follow": "Hemen Takip Et"
+        }
+    },
+    "Reviews": {
+        "title": "Müşterilerimiz Ne Diyor?",
+        "subtitle": "Google Reviews",
+        "review1": "Salonumuza aldığımız elektrikli şömine harika bir hava kattı. Kurulum ekibi çok titiz ve temiz çalıştı. Kesinlikle tavsiye ederim.",
+        "date1": "2 ay",
+        "review2": "Ürün kalitesi mükemmel. İnternet üzerinden sipariş verirken tereddüt etmiştim ama beklediğimden çok daha iyi geldi.",
+        "date2": "1 ay",
+        "review3": "Satış sonrası destekleri çok ilgiliydi. Her sorumuza anında cevap verdiler. İlgileri için teşekkürler.",
+        "date3": "3 hafta",
+        "viewAll": "Tüm Google Yorumlarını Gör"
+    },
+    "ProductsPage": {
+        "title": "Ürünlerimiz",
+        "subtitle": "Evinize sıcaklık katacak özel tasarımlarımız.",
+        "categories": "Kategoriler",
+        "allProducts": "Tüm Ürünler",
+        "wood": "Odunlu",
+        "ethanol": "Etanollü",
+        "electric": "Elektrikli",
+        "goToStore": "Online Mağazaya Git",
+        "items": {
+            "1": {
+                "name": "Klasik Odunlu Şömine",
+                "price": "25.000 TL"
+            },
+            "2": {
+                "name": "Modern Etanollü Model",
+                "price": "18.500 TL"
+            },
+            "3": {
+                "name": "Panoramik Elektrikli",
+                "price": "12.000 TL"
+            },
+            "4": {
+                "name": "Rustik Odunlu",
+                "price": "28.000 TL"
+            },
+            "5": {
+                "name": "Masaüstü Etanollü",
+                "price": "4.500 TL"
+            },
+            "6": {
+                "name": "Gömme Elektrikli",
+                "price": "15.000 TL"
+            }
+        }
+    },
+    "PortfolioPage": {
+        "title": "Referanslarımız",
+        "subtitle": "Tamamladığımız seçkin projelerden örnekler.",
+        "items": {
+            "1": {
+                "title": "Villa Bademli"
+            },
+            "2": {
+                "title": "Ofis Lounge"
+            },
+            "3": {
+                "title": "Dağ Evi Projesi"
+            },
+            "4": {
+                "title": "Modern Daire"
+            },
+            "5": {
+                "title": "Restaurant Şömine"
+            },
+            "6": {
+                "title": "Otel Lobisi"
+            }
+        }
+    },
+    "ContactPage": {
+        "title": "İletişim",
+        "subtitle": "Projeleriniz için bizimle iletişime geçin.",
+        "addressTitle": "Adres Bilgileri",
+        "address": "Organize Sanayi Bölgesi, Mavi Cadde No: 12, Nilüfer / BURSA",
+        "contactChannels": "İletişim Kanalları",
+        "phone": "Telefon",
+        "email": "E-posta",
+        "hours": "Çalışma Saatleri: Pzt-Cmt 09:00 - 18:00",
+        "formTitle": "Bize Mesaj Gönderin",
+        "labelName": "Adınız",
+        "holderName": "Adınız Soyadınız",
+        "labelPhone": "Telefon",
+        "holderPhone": "0555 555 55 55",
+        "labelEmail": "E-posta",
+        "holderEmail": "ornek@email.com",
+        "labelMessage": "Mesajınız",
+        "holderMessage": "Projenizden bahsedin...",
+        "submit": "Gönder"
+    },
+    "Navigation": {
+        "home": "Anasayfa",
+        "about": "Hakkımızda",
+        "products": "Ürünler",
+        "portfolio": "Referanslar",
+        "contact": "İletişim"
+    },
+    "AboutPage": {
+        "title": "Hakkımızda",
+        "learnMore": "Daha Fazla",
+        "since": "1990'dan Beri",
+        "tagline": "Güven, Kalite ve Estetik",
+        "historyTitle": "Tarihçemiz",
+        "historyText1": "Bursa Şömine, 1990 yılında Bursa'da kurulmuş köklü bir markadır. Kuruluşundan bu yana şömine sektöründe faaliyet gösteren firmamız, yılların tecrübesiyle sektörde güvenilirliğini kanıtlamıştır.",
+        "historyText2": "2011 yılında elektrikli şömine alanına yatırım yaparak, bu alanda da öncü adımlar atmaya başladık. Bugün, tamamen kendi tasarımımız olan elektrikli şömine modelleriyle üretim yapan yerli bir marka olmanın gururunu yaşıyoruz.",
+        "productsTitle": "Ürünlerimiz",
+        "productsText": "Geniş ürün yelpazemizle farklı ihtiyaçlara çözümler sunuyoruz.",
+        "product1": "Odunlu Şömine Hazneleri",
+        "product2": "Isıtma Sistemli Elektrikli Şömineler",
+        "product3": "3D Su Buharlı Hibrid Şömineler",
+        "philosophyTitle": "Felsefemiz",
+        "philosophyText": "Bursa Şömine olarak, kalite, estetik ve teknolojiyi bir araya getirerek yaşam alanlarına değer katmayı hedefliyoruz. Ürünlerimiz yalnızca bir ısı kaynağı değil; aynı zamanda dekorasyonun estetik bir parçasıdır.",
+        "valuesTitle": "Değerlerimiz",
+        "value1": "Kaliteye Bağlılık",
+        "value2": "Müşteri Memnuniyeti",
+        "value3": "Güvenilir Hizmet",
+        "visionTitle": "Vizyonumuz",
+        "visionText": "Müşterilerimize sadece bir ürün değil, uzun vadeli güven sunmak istiyoruz. Kalite, şeffaflık ve yenilikçilik ilkeleriyle sektörde fark yaratan bir marka olmayı hedefliyoruz.",
+        "missionTitle": "Misyonumuz",
+        "mission1": "Müşteri ihtiyaçlarını doğru analiz ederek en uygun çözümleri sunmak.",
+        "mission2": "Ürün ve hizmet kalitesini her zaman ön planda tutmak.",
+        "mission3": "Estetik, dayanıklılık ve işlevselliği bir araya getirmek."
+    },
+    "FAQ": {
+        "title": "Sıkça Sorulan Sorular",
+        "subtitle": "Elektrikli şömineler hakkında merak edilenler.",
+        "viewAll": "Tüm Soruları Gör",
+        "q1": "Elektrikli şömine nasıl çalışır?",
+        "a1": "Elektrikli şömineler, elektrik enerjisini ısıya dönüştürerek, odanızı ısıtan ve görsel alev efektleri sunan cihazlardır. İçinde bir ısıtıcı mekanizma bulunur ve bu mekanizma, odanın sıcaklığını artırmak için çalışır. Şöminenin ön yüzeyinde bulunan LED ışıklar, alev efektlerini simüle ederek estetik bir görüntü sağlar.",
+        "q2": "Elektrikli şöminenin avantajları nelerdir?",
+        "a2": "Kolay Kurulum: Baca veya gaz bağlantısı gerektirmez. Enerji Verimliliği: Enerjiyi doğrudan ısıya dönüştürür. Çevre Dostu: Karbon salınımı yapmaz. Isıtma Kontrolü: Termostatlarla ısı kontrolü sağlar. Estetik Görünüm: Her türlü dekora uyum sağlar.",
+        "q3": "Elektrikli şömineyi her odada kullanabilir miyim?",
+        "a3": "Evet, elektrikli şömineler her odada kullanılabilir. Elektrik bağlantısı olan her alanda çalışabilirler. Ayrıca, baca gerektirmedikleri için iç mekanlarda daha esnek bir şekilde kullanılabilir.",
+        "q4": "Elektrikli şömineyi kullanmak güvenli mi?",
+        "a4": "Elektrikli şömineler, yüksek güvenlik standartlarına göre üretilmiştir. Isıtıcılar, aşırı ısınmayı önlemek için otomatik kapanma özelliğine sahip olabilir. Ayrıca, modern elektrikli şömineler, çocuklar ve evcil hayvanlar için güvenli olacak şekilde tasarlanmıştır.",
+        "q5": "Elektrikli şöminenin bakımı nasıl yapılır?",
+        "a5": "Elektrikli şömineler, bakımı kolay cihazlardır. Alev efekti sağlayan LED ışıklar ve ısıtıcılar genellikle uzun ömürlüdür. Periyodik olarak toz almak ve temizlemek yeterlidir. Ayrıca, ürününüzün kullanım kılavuzuna bakarak bakım işlemleri hakkında daha fazla bilgi alabilirsiniz.",
+        "q6": "Elektrikli şömine ne kadar elektrik harcar?",
+        "a6": "Elektrikli şöminelerin enerji tüketimi, modeline ve kullanım süresine bağlı olarak değişir. Ortalama olarak, elektrikli şömineler saatte 1-2 kWh arasında enerji harcar. Bu da size rahatça ısınma imkanı sunarken düşük enerji maliyeti sağlar.",
+        "q7": "Elektrikli şöminede gerçek alev var mı?",
+        "a7": "Hayır, elektrikli şömineler gerçek alev kullanmaz. Ancak, modern modellerde kullanılan LED ışıklar ve özel alev efektleri, gerçek ateş görüntüsünü taklit ederek görsel olarak sıcak bir atmosfer oluşturur. Bu efektler, estetik bir görünüm sağlar ve her ortamda hoş bir ambiyans yaratır.",
+        "q8": "Elektrikli şöminenin kurulumunu nasıl yapabilirim?",
+        "a8": "Elektrikli şöminelerin kurulumları oldukça basittir. Genellikle sadece elektrik bağlantısının yapılması yeterlidir. Ürünle birlikte gelen kurulum kılavuzunu takip ederek, evde kolayca kurulum yapabilirsiniz. Eğer profesyonel yardım almak isterseniz, yetkili servislerimizden destek alabilirsiniz.",
+        "q9": "Elektrikli şömineyi yazın da kullanabilir miyim?",
+        "a9": "Evet, elektrikli şömineler sadece kışın değil, yazın da kullanılabilir. Alev efektini açıp ısıtmadan sadece görsel atmosfer sağlamak için kullanabilirsiniz. Bu, odanıza yazın bile sıcak bir hava katacaktır."
+    },
+    "Footer": {
+        "brandDescription": "Evinizin atmosferini değiştiren, modern ve şık şömine çözümleri. Kalite ve güvenin adresi.",
+        "quickLinks": "Hızlı Erişim",
+        "products": "Ürünler",
+        "contact": "İletişim",
+        "faq": "S.S.S.",
+        "rights": "Bursa Şömine. Tüm hakları saklıdır.",
+        "address": "Organize Sanayi Bölgesi, Mavi Cadde No: 12, Nilüfer / BURSA",
+        "phone": "+90 (224) 123 45 67",
+        "email": "info@bursasomine.com",
+        "returnPolicy": "İade ve Değişim Koşulları"
+    },
+    "ReturnPolicy": {
+        "title": "İade ve Değişim Koşulları",
+        "subtitle": "Müşteri memnuniyeti bizim önceliğimizdir.",
+        "intro": "Bursa Şömine olarak, müşterilerimizin memnuniyetini ön planda tutuyoruz ve alışveriş deneyiminizin sorunsuz olmasını sağlamak için elimizden geleni yapıyoruz. Aldığınız ürünün beklentilerinizi karşılamaması durumunda, rahatlıkla iade veya değişim işlemi yapabilirsiniz. Aşağıdaki koşulları sağlayarak iade veya değişim işleminizi gerçekleştirebilirsiniz.",
+        "timeTitle": "İade ve Değişim Süresi",
+        "timeList1": "Ürünlerinizi, teslim tarihinden itibaren 14 gün içinde iade edebilirsiniz.",
+        "timeList2": "Ürününüz kullanılmamış ve orijinal ambalajında olduğu sürece, iade veya değişim işlemi yapılabilir.",
+        "timeList3": "Elektrikli şömine ve ısıtıcı ürünlerimizde, yalnızca arızalı ürünler iade edilebilir. Ürünün teknik özellikleri ve işlevselliği ile ilgili bir sorun olduğunda, garanti kapsamında gerekli işlemleri kolayca yapabilirsiniz.",
+        "conditionsTitle": "İade ve Değişim Şartları",
+        "conditionsList1": "İade ve değişim için ürün, orijinal kutusunda ve ambalajında olmalıdır.",
+        "conditionsList2": "Üründe herhangi bir hasar, kullanım izi veya eksik parça bulunmamalıdır.",
+        "conditionsList3": "Ürünü iade ederken, fatura ve iade talep formu ile birlikte göndermeniz gerekecektir.",
+        "processTitle": "İade ve Değişim İşlemi",
+        "processRequestTitle": "İade Talebi:",
+        "processRequestText": "Ürününüzü iade etmek istediğinizde, bursasomine@hotmail.com e-posta adresine ulaşarak bize başvurabilirsiniz. İade talebinizi iletin ve size yardımcı olmaktan memnuniyet duyarız.",
+        "processExchangeTitle": "Değişim Talebi:",
+        "processExchangeText": "Eğer ürününüzü değiştirerek başka bir modelle değiştirmek isterseniz, aynı şekilde müşteri hizmetlerimize başvurduktan sonra, stok durumuna göre size uygun alternatif ürünleri öneriyoruz.",
+        "processShippingTitle": "Ürün Gönderimi:",
+        "processShippingText": "İade ve değişim işlemi için ürünü belirtilen adrese göndermeniz gerekmektedir. Kargo ücreti, müşteri tarafından karşılanacaktır. Ürününüz, iade adresimize ulaştıktan sonra, işleminiz en kısa sürede tamamlanacaktır.",
+        "considerationsTitle": "İade ve Değişim İşleminde Dikkat Edilmesi Gerekenler",
+        "considerationsReturnTitle": "İade:",
+        "considerationsReturnText": "Ürününüz iade alındığında, ödemeniz, tercihinize göre orijinal ödeme yöntemine geri yapılacaktır. Kredi kartı ile yapılan ödemelerde, ücret kartınıza iade edilecektir.",
+        "considerationsExchangeTitle": "Değişim:",
+        "considerationsExchangeText": "Ürün değişimi için, stok durumuna göre aynı değer veya uygun fiyatlı başka bir ürün önerilebilir. Ürün değeri farklı ise, fiyat farkı talep edilebilir.",
+        "exceptionsTitle": "İade ve Değişim Yapılamayacak Durumlar",
+        "exceptionsList1": "Ürün, kullanılmış ve hasar görmüşse.",
+        "exceptionsList2": "Ürünün orijinal ambalajı açılmış ve ürün ikinci el gibi görünüyorsa.",
+        "exceptionsList3": "Elektrikli ürünlerde yalnızca arızalı durumlarda iade kabul edilmektedir.",
+        "warrantyTitle": "Garanti Koşulları",
+        "warrantyText1": "Elektrikli şöminelerimiz 2 yıl garanti kapsamındadır. Bu süre zarfında ürünle ilgili yaşadığınız herhangi bir teknik sorun, garanti kapsamında ücretsiz olarak onarılacaktır.",
+        "warrantyText2": "Fatura tarihi itibariyle garanti süresi başlar ve bu süre boyunca oluşabilecek herhangi bir arıza, Bursa Şömine tarafından ücretsiz olarak giderilecektir."
+    }
+}

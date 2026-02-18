@@ -2,41 +2,29 @@
 
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { motion } from 'framer-motion';
-import { Star, User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { Star } from 'lucide-react';
 
-export default function ReviewsSection() {
-    const t = useTranslations('Reviews');
+interface ReviewItem {
+    author: string;
+    rating: number;
+    date: string;
+    text: string;
+}
 
-    const REVIEWS = [
-        {
-            id: 1,
-            author: "Ahmet Yılmaz",
-            rating: 5,
-            date: t('date1'),
-            text: t('review1')
-        },
-        {
-            id: 2,
-            author: "Zeynep Kaya",
-            rating: 5,
-            date: t('date2'),
-            text: t('review2')
-        },
-        {
-            id: 3,
-            author: "Murat Demir",
-            rating: 5,
-            date: t('date3'),
-            text: t('review3')
-        }
-    ];
+interface ReviewsSectionProps {
+    title: string;
+    subtitle: string;
+    reviews: ReviewItem[];
+    viewAllText: string;
+    googleMapsUrl?: string;
+}
 
+export default function ReviewsSection({ title, subtitle, reviews, viewAllText, googleMapsUrl = 'https://www.google.com/maps' }: ReviewsSectionProps) {
     return (
         <SectionWrapper className="bg-white">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary mb-4">
-                    {t('title')}
+                    {title}
                 </h2>
                 <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-2xl font-bold text-foreground">4.9</span>
@@ -46,13 +34,13 @@ export default function ReviewsSection() {
                         ))}
                     </div>
                 </div>
-                <p className="text-muted-foreground">{t('subtitle')}</p>
+                <p className="text-muted-foreground">{subtitle}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {REVIEWS.map((review, idx) => (
+                {reviews.map((review, idx) => (
                     <motion.div
-                        key={review.id}
+                        key={idx}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -74,7 +62,7 @@ export default function ReviewsSection() {
                             <span className="ml-auto text-xs text-muted-foreground">{review.date}</span>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                            "{review.text}"
+                            &ldquo;{review.text}&rdquo;
                         </p>
                     </motion.div>
                 ))}
@@ -82,12 +70,12 @@ export default function ReviewsSection() {
 
             <div className="mt-10 text-center">
                 <a
-                    href="https://www.google.com/maps"
+                    href={googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-primary hover:underline font-medium"
                 >
-                    {t('viewAll')} →
+                    {viewAllText} →
                 </a>
             </div>
         </SectionWrapper>

@@ -4,34 +4,39 @@ import { useState } from 'react';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
 
-interface FAQSectionProps {
-    limit?: number;
+interface FaqItem {
+    question: { tr: string; en: string };
+    answer: { tr: string; en: string };
 }
 
-export default function FAQSection({ limit }: FAQSectionProps) {
-    const t = useTranslations('FAQ');
+interface FAQSectionProps {
+    limit?: number;
+    faqs?: FaqItem[];
+    locale: 'tr' | 'en';
+    title: string;
+    subtitle: string;
+    viewAllText: string;
+}
+
+export default function FAQSection({ limit, faqs = [], locale, title, subtitle, viewAllText }: FAQSectionProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const toggleAccordion = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
-    const FAQS = Array.from({ length: 9 }, (_, i) => ({
-        question: t(`q${i + 1}` as any),
-        answer: t(`a${i + 1}` as any),
-    }));
+    const visibleFaqs = limit ? faqs.slice(0, limit) : faqs;
 
-    const visibleFaqs = limit ? FAQS.slice(0, limit) : FAQS;
+    if (visibleFaqs.length === 0) return null;
 
     return (
         <SectionWrapper className="bg-secondary/30">
-            <SectionHeader title={t('title')} subtitle={t('subtitle')} />
+            <SectionHeader title={title} subtitle={subtitle} />
 
             <div className="max-w-3xl mx-auto mb-10">
                 {visibleFaqs.map((faq, index) => (
@@ -45,7 +50,7 @@ export default function FAQSection({ limit }: FAQSectionProps) {
                                 "text-lg font-medium transition-colors duration-300",
                                 openIndex === index ? "text-primary" : "text-muted-foreground group-hover:text-primary"
                             )}>
-                                {faq.question}
+                                {faq.question[locale]}
                             </span>
                             <span className={cn(
                                 "flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300",
@@ -66,7 +71,7 @@ export default function FAQSection({ limit }: FAQSectionProps) {
                                     className="overflow-hidden"
                                 >
                                     <p className="pb-6 text-muted-foreground leading-relaxed">
-                                        {faq.answer}
+                                        {faq.answer[locale]}
                                     </p>
                                 </motion.div>
                             )}
@@ -79,7 +84,7 @@ export default function FAQSection({ limit }: FAQSectionProps) {
                 <div className="text-center">
                     <Button variant="outline" asChild>
                         <Link href="/faq" className="group">
-                            {t('viewAll')} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            {viewAllText} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
                 </div>

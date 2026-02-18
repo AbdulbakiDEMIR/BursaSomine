@@ -1,13 +1,21 @@
-"use client";
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { getLocale } from 'next-intl/server';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { SectionHeader } from '@/components/SectionHeader';
 import Image from 'next/image';
 import { Flame, Zap, Droplets, Trophy, Users, ShieldCheck, Target, Heart } from 'lucide-react';
+import { apiGetAboutPage } from '@/lib/apiClient';
 
-export default function AboutPage() {
-    const t = useTranslations('AboutPage');
+export default async function AboutPage() {
+    const t = await getTranslations('AboutPage');
+    const locale = (await getLocale()) as 'tr' | 'en';
+
+    const aboutData = await apiGetAboutPage();
+
+    // API'den gelen veriler veya translation fallback
+    const historyText1 = aboutData?.history?.[locale] ?? t('historyText1');
+    const visionText = aboutData?.vision?.[locale] ?? t('visionText');
+    const missionItems = aboutData?.mission?.[locale] ?? [t('mission1'), t('mission2'), t('mission3')];
 
     return (
         <main className="flex flex-col min-h-screen">
@@ -35,7 +43,7 @@ export default function AboutPage() {
                         <SectionHeader title={t('historyTitle')} className="text-left items-start" />
                         <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                             <p>
-                                <span className="font-bold text-primary text-xl">1990</span> - {t('historyText1')}
+                                <span className="font-bold text-primary text-xl">1990</span> - {historyText1}
                             </p>
                             <p>
                                 <span className="font-bold text-primary text-xl">2011</span> - {t('historyText2')}
@@ -86,36 +94,30 @@ export default function AboutPage() {
                 <SectionHeader title={t('valuesTitle')} subtitle={t('philosophyText')} />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0">
-                            <Trophy className="w-10 h-10" />
-                        </div>
+                        <div className="flex-shrink-0"><Trophy className="w-10 h-10" /></div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value1')}</h4>
-                            <p className="text-sm opacity-80">Kaliteden ödün vermeyen üretim anlayışı.</p>
+                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
                         </div>
                     </div>
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0">
-                            <Heart className="w-10 h-10" />
-                        </div>
+                        <div className="flex-shrink-0"><Heart className="w-10 h-10" /></div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value2')}</h4>
-                            <p className="text-sm opacity-80">Mutlu müşteriler en büyük referansımızdır.</p>
+                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
                         </div>
                     </div>
                     <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0">
-                            <ShieldCheck className="w-10 h-10" />
-                        </div>
+                        <div className="flex-shrink-0"><ShieldCheck className="w-10 h-10" /></div>
                         <div>
                             <h4 className="text-lg font-bold mb-1">{t('value3')}</h4>
-                            <p className="text-sm opacity-80">Satış öncesi ve sonrası tam destek.</p>
+                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
                         </div>
                     </div>
                 </div>
             </SectionWrapper>
 
-            {/* Vision & Mission */}
+            {/* Vision & Mission — API'den gelen veriler */}
             <SectionWrapper className="bg-muted/50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div className="bg-background p-10 rounded-2xl shadow-sm border-l-4 border-orange-500">
@@ -126,7 +128,7 @@ export default function AboutPage() {
                             <h3 className="text-2xl font-bold">{t('visionTitle')}</h3>
                         </div>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                            {t('visionText')}
+                            {visionText}
                         </p>
                     </div>
 
@@ -138,18 +140,12 @@ export default function AboutPage() {
                             <h3 className="text-2xl font-bold">{t('missionTitle')}</h3>
                         </div>
                         <ul className="space-y-4 text-muted-foreground">
-                            <li className="flex items-start gap-3">
-                                <span className="w-2 h-2 rounded-full bg-blue-500 mt-2.5 flex-shrink-0" />
-                                <span>{t('mission1')}</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="w-2 h-2 rounded-full bg-blue-500 mt-2.5 flex-shrink-0" />
-                                <span>{t('mission2')}</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="w-2 h-2 rounded-full bg-blue-500 mt-2.5 flex-shrink-0" />
-                                <span>{t('mission3')}</span>
-                            </li>
+                            {missionItems.map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-3">
+                                    <span className="w-2 h-2 rounded-full bg-blue-500 mt-2.5 flex-shrink-0" />
+                                    <span>{item}</span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>

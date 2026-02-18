@@ -99,6 +99,7 @@
         "ethanol": "Etanollü",
         "electric": "Elektrikli",
         "goToStore": "Online Mağazaya Git",
+        "noProducts": "Ürün bulunamadı.",
         "items": {
             "1": {
                 "name": "Klasik Odunlu Şömine",
@@ -180,6 +181,8 @@
     "AboutPage": {
         "title": "Hakkımızda",
         "learnMore": "Daha Fazla",
+        "since": "1990'dan Beri",
+        "tagline": "Güven, Kalite ve Estetik",
         "historyTitle": "Tarihçemiz",
         "historyText1": "Bursa Şömine, 1990 yılında Bursa'da kurulmuş köklü bir markadır. Kuruluşundan bu yana şömine sektöründe faaliyet gösteren firmamız, yılların tecrübesiyle sektörde güvenilirliğini kanıtlamıştır.",
         "historyText2": "2011 yılında elektrikli şömine alanına yatırım yaparak, bu alanda da öncü adımlar atmaya başladık. Bugün, tamamen kendi tasarımımız olan elektrikli şömine modelleriyle üretim yapan yerli bir marka olmanın gururunu yaşıyoruz.",

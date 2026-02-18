@@ -3,22 +3,20 @@
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { motion } from 'framer-motion';
 
-import { useTranslations } from 'next-intl';
+interface StatItem {
+    value: string;
+    label: string;
+}
 
-export default function StatsSection() {
-    const t = useTranslations('HomePage.stats');
+interface StatsSectionProps {
+    stats: StatItem[];
+}
 
-    const STATS = [
-        { value: "20+", label: t('years') },
-        { value: "500+", label: t('projects') },
-        { value: "%100", label: t('satisfaction') },
-        { value: "81", label: t('cities') },
-    ];
-
+export default function StatsSection({ stats }: StatsSectionProps) {
     return (
         <SectionWrapper className="bg-primary text-primary-foreground py-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-primary-foreground/10 text-center">
-                {STATS.map((stat, idx) => (
+                {stats.map((stat, idx) => (
                     <motion.div
                         key={idx}
                         initial={{ opacity: 0, scale: 0.9 }}

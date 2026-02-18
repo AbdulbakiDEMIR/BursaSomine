@@ -5,11 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
 import ImageWithLoader from '@/components/ui/image-with-loader';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
 
-export default function AboutSummary() {
-    const t = useTranslations('AboutPage');
+interface AboutSummaryProps {
+    title: string;
+    historyText: string;
+    philosophyText: string;
+    learnMore: string;
+    since: string;
+    tagline: string;
+}
 
+export default function AboutSummary({ title, historyText, philosophyText, learnMore, since, tagline }: AboutSummaryProps) {
     return (
         <SectionWrapper className="bg-secondary/30">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -22,23 +28,21 @@ export default function AboutSummary() {
                     className="space-y-6"
                 >
                     <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary">{t('title')}</h2>
+                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-primary">{title}</h2>
                         <div className="w-20 h-1.5 bg-orange-500 rounded-full" />
                     </div>
 
                     <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
-                        <p>
-                            {t('historyText1')}
-                        </p>
+                        <p>{historyText}</p>
                         <p className="border-l-4 border-orange-200 pl-4 py-2 italic font-serif">
-                            "{t('philosophyText')}"
+                            &ldquo;{philosophyText}&rdquo;
                         </p>
                     </div>
 
                     <div className="pt-4">
                         <Button size="lg" variant="outline" className="text-orange-600 border-orange-200 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-400 group" asChild>
                             <Link href="/about" className="flex items-center gap-2">
-                                {t('learnMore')}
+                                {learnMore}
                                 <span className="block transition-transform group-hover:translate-x-1">→</span>
                             </Link>
                         </Button>
@@ -62,11 +66,10 @@ export default function AboutSummary() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
 
                     <div className="absolute bottom-8 left-8 text-white z-10">
-                        <p className="font-bold text-3xl mb-1">{t('since')}</p>
-                        <p className="text-lg text-white/80 font-light">{t('tagline')}</p>
+                        <p className="font-bold text-3xl mb-1">{since}</p>
+                        <p className="text-lg text-white/80 font-light">{tagline}</p>
                     </div>
 
-                    {/* Decorative Corner */}
                     <div className="absolute top-6 right-6 w-16 h-16 border-t-4 border-r-4 border-white/20 rounded-tr-3xl" />
                 </motion.div>
             </div>

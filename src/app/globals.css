@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
 
 @theme inline {
   --color-background: var(--background);
@@ -90,4 +92,60 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter, sans-serif);
+}
+
+/* 
+  Custom Scrollbar Styles 
+  Thin and Theme-Aware (Light/Dark Mode)
+*/
+
+:root {
+  --scrollbar-thumb: #cbd5e1;
+  /* slate-300 */
+  --scrollbar-track: transparent;
+}
+
+/* Dark mode overrides applied when .dark class is present on a parent (e.g., html or body) */
+.dark {
+  --scrollbar-thumb: #334155;
+  /* slate-700 */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  /* Creates padding effect */
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+  /* slate-400 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #475569;
+  /* slate-600 */
+}
+
+/* Ensure textarea specifically adheres to thin style */
+textarea {
+  scrollbar-width: thin;
 }
