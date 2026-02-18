@@ -9,14 +9,17 @@ import { Plus, Minus, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/routing';
 
+// Soru ve cevapların dil yapısı
 interface FaqItem {
     question: { tr: string; en: string };
     answer: { tr: string; en: string };
 }
 
+// Bileşenin alacağı özellikler (Props)
 interface FAQSectionProps {
     limit?: number;
     faqs?: FaqItem[];
+    // İŞTE BURASI HATAYI ÇÖZEN KISIM:
     locale: 'tr' | 'en';
     title: string;
     subtitle: string;
@@ -50,6 +53,7 @@ export default function FAQSection({ limit, faqs = [], locale, title, subtitle, 
                                 "text-lg font-medium transition-colors duration-300",
                                 openIndex === index ? "text-primary" : "text-muted-foreground group-hover:text-primary"
                             )}>
+                                {/* Burada gelen locale değerine göre doğru dili seçiyor */}
                                 {faq.question[locale]}
                             </span>
                             <span className={cn(
@@ -71,6 +75,7 @@ export default function FAQSection({ limit, faqs = [], locale, title, subtitle, 
                                     className="overflow-hidden"
                                 >
                                     <p className="pb-6 text-muted-foreground leading-relaxed">
+                                        {/* Cevap için de aynı şekilde */}
                                         {faq.answer[locale]}
                                     </p>
                                 </motion.div>
