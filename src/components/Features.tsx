@@ -2,25 +2,37 @@
 
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { motion } from 'framer-motion';
-import { Flame, ShieldCheck, Ruler, LucideIcon } from 'lucide-react';
+import { ICON_MAP } from '@/components/ui/icons';
+import { Flame, ShieldCheck, Ruler } from 'lucide-react'; // Keep these for fallback if needed, or remove if unused
 
 interface FeatureItem {
     title: string;
     description: string;
+    icon?: string;
 }
 
 interface FeaturesProps {
     features: FeatureItem[];
 }
 
-const ICONS: LucideIcon[] = [ShieldCheck, Ruler, Flame];
+const DEFAULT_ICON = Flame;
 
 export default function Features({ features }: FeaturesProps) {
     return (
         <SectionWrapper className="relative bg-white overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
                 {features.map((feature, idx) => {
-                    const Icon = ICONS[idx % ICONS.length];
+                    // Try to find the icon by name, otherwise fallback to existing round-robin or default
+                    let Icon = DEFAULT_ICON;
+
+                    if (feature.icon && ICON_MAP[feature.icon]) {
+                        Icon = ICON_MAP[feature.icon];
+                    } else {
+                        // Fallback logic for legacy data without icon field
+                        const fallbackIcons = [ShieldCheck, Ruler, Flame];
+                        Icon = fallbackIcons[idx % fallbackIcons.length];
+                    }
+
                     return (
                         <motion.div
                             key={idx}

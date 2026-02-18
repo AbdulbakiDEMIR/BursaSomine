@@ -36,14 +36,13 @@ export default async function Home() {
   // Hero verileri
   const heroTitle = homeData?.hero?.title?.[locale] ?? t('heroTitle');
   const heroSubtitle = homeData?.hero?.subtitle?.[locale] ?? t('heroSubtitle');
-  const heroCtaText = homeData?.hero?.ctaText?.[locale] ?? t('cta');
 
   // Stats verileri
   const stats = homeData?.stats
     ? [
-      { value: `${homeData.stats.yearsValue}+`, label: homeData.stats.yearsLabel[locale] },
-      { value: `${homeData.stats.projectsValue}+`, label: homeData.stats.projectsLabel[locale] },
-      { value: `%${homeData.stats.satisfactionValue}`, label: homeData.stats.satisfactionLabel[locale] },
+      { value: `${homeData.stats.yearsValue}`, label: homeData.stats.yearsLabel[locale] },
+      { value: `${homeData.stats.projectsValue}`, label: homeData.stats.projectsLabel[locale] },
+      { value: `${homeData.stats.satisfactionValue}`, label: homeData.stats.satisfactionLabel[locale] },
       { value: `${homeData.stats.citiesValue}`, label: homeData.stats.citiesLabel[locale] },
     ]
     : [
@@ -58,6 +57,7 @@ export default async function Home() {
     ? homeData.features.map((f) => ({
       title: f.title[locale],
       description: f.description[locale],
+      icon: f.icon,
     }))
     : [
       { title: t('features.qualityTitle'), description: t('features.qualityDesc') },
@@ -71,20 +71,19 @@ export default async function Home() {
       <Hero
         title={heroTitle}
         subtitle={heroSubtitle}
-        ctaText={heroCtaText}
-        ctaLink="/products"
+        ctaText={t('cta')}
         contactText={t('contactBtn')}
       />
 
       <StatsSection stats={stats} />
 
       <AboutSummary
-        title={tAbout('title')}
-        historyText={aboutData?.history?.[locale] ?? tAbout('historyText1')}
-        philosophyText={aboutData?.vision?.[locale] ?? tAbout('philosophyText')}
+        title={homeData?.about?.title?.[locale] ?? tAbout('title')}
+        historyText={homeData?.about?.description?.[locale] ?? aboutData?.history?.[locale] ?? tAbout('historyText1')}
+        philosophyText={homeData?.about?.philosophy?.[locale] ?? aboutData?.vision?.[locale] ?? tAbout('philosophyText')}
         learnMore={tAbout('learnMore')}
-        since={tAbout('since')}
-        tagline={tAbout('tagline')}
+        since={homeData?.about?.sinceDate?.[locale] ?? tAbout('since')}
+        tagline={homeData?.about?.tagline?.[locale] ?? tAbout('tagline')}
       />
 
       <Features features={features} />

@@ -60,116 +60,142 @@ export default function AdminSidebar({ isOpen, toggle, isDark, toggleTheme }: Ad
     }
 
     return (
-        <aside
-            className={cn(
-                "fixed top-0 left-0 z-40 h-screen flex flex-col transition-all duration-300 shadow-xl border-r",
-                isOpen ? "w-64" : "w-17 w-[68px]", // w-17 approx 68px
-                // Theme Colors
-                "bg-white dark:bg-black",
-                "border-gray-200 dark:border-gray-800",
-                "text-gray-900 dark:text-white"
+        <>
+            {/* Mobile Open Button (Only visible on mobile when sidebar is closed) */}
+            {!isOpen && (
+                <button
+                    onClick={toggle}
+                    className="fixed left-4 top-4 z-50 p-2 bg-white dark:bg-black rounded-lg shadow-md border border-gray-200 dark:border-gray-800 md:hidden text-gray-500 hover:text-orange-500 transition-colors"
+                    aria-label="Toggle Sidebar"
+                >
+                    <PanelLeftOpen className="w-5 h-5" />
+                </button>
             )}
-        >
-            {/* Toggle Button (Outside - Absolute) */}
-            <button
-                onClick={toggle}
+
+            <aside
                 className={cn(
-                    "absolute -right-8 top-5 p-1.5 hover:scale-110 transition-all z-50 flex items-center justify-center w-8 h-8",
-                    // Theme Colors for Toggle Button
-                    "text-gray-500 hover:text-orange-500"
+                    "fixed top-0 left-0 z-40 h-screen flex flex-col transition-all duration-300 shadow-xl border-r",
+                    // Width & Translation Logic
+                    isOpen
+                        ? "w-64 translate-x-0"
+                        : "w-64 -translate-x-full md:w-[68px] md:translate-x-0",
+                    // Theme Colors
+                    "bg-white dark:bg-black",
+                    "border-gray-200 dark:border-gray-800",
+                    "text-gray-900 dark:text-white"
                 )}
             >
-                {isOpen ? <PanelLeftClose className="w-5 h-5" /> : <PanelLeftOpen className="w-5 h-5" />}
-            </button>
+                {/* Toggle Button (Desktop & Mobile Open - Absolute) */}
+                <button
+                    onClick={toggle}
+                    className={cn(
+                        "absolute right-4 top-6 p-1 transition-all z-50 flex items-center justify-center",
+                        // Theme Colors for Toggle Button
+                        "border-gray-200 dark:border-gray-700 text-gray-500 hover:text-orange-500",
+                        // Hide this button on mobile when sidebar is closed (it's off screen anyway, but just in case)
+                        !isOpen && "hidden md:flex -right-10"
+                    )}
+                >
+                    {isOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+                </button>
 
-            {/* Header / Logo */}
-            <div className={cn("flex items-center h-20 border-b transition-all relative",
-                isOpen ? "px-6" : "px-0 justify-center",
-                "border-gray-200 dark:border-gray-800"
-            )}>
-                <Link href="/admin" className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
-                    <div className="w-10 h-10 bg-orange-500 rounded-xl flex-shrink-0 flex items-center justify-center shadow-lg shadow-orange-500/20">
-                        <Flame className="w-6 h-6 text-white" />
-                    </div>
-                    {isOpen && (
-                        <div className="transition-opacity duration-300 opacity-100">
-                            <p className="font-bold text-base leading-tight">Bursa Sömine</p>
-                            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wide uppercase">Yönetim Paneli</p>
+                {/* Header / Logo */}
+                <div className={cn("flex items-center h-20 border-b transition-all relative",
+                    isOpen ? "px-6" : "px-0 justify-center",
+                    "border-gray-200 dark:border-gray-800"
+                )}>
+                    <Link href="/admin" className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
+                        <div className="w-10 h-10 bg-orange-500 rounded-xl flex-shrink-0 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                            <Flame className="w-6 h-6 text-white" />
                         </div>
-                    )}
-                </Link>
-            </div>
+                        {isOpen && (
+                            <div className="transition-opacity duration-300 opacity-100">
+                                <p className="font-bold text-base leading-tight">Bursa Sömine</p>
+                                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wide uppercase">Yönetim Paneli</p>
+                            </div>
+                        )}
+                    </Link>
+                </div>
 
-            {/* Navigation */}
-            <nav className="flex-1 p-3 space-y-1 mt-4 overflow-x-hidden">
-                {NAV_ITEMS.map((item) => {
-                    const isActive = item.exact
-                        ? pathname === item.href
-                        : pathname.startsWith(item.href);
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            title={!isOpen ? item.label : undefined}
-                            className={cn(
-                                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative',
-                                isActive
-                                    ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
-                                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white'
-                            )}
-                        >
-                            <item.icon className={cn("w-5 h-5 flex-shrink-0 transition-colors", isActive ? "text-white" : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white")} />
+                {/* Navigation */}
+                <nav className="flex-1 p-3 space-y-1 mt-4 overflow-x-hidden">
+                    {NAV_ITEMS.map((item) => {
+                        const isActive = item.exact
+                            ? pathname === item.href
+                            : pathname.startsWith(item.href);
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                title={!isOpen ? item.label : undefined}
+                                className={cn(
+                                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative',
+                                    isActive
+                                        ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
+                                        : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white'
+                                )}
+                            >
+                                <item.icon className={cn("w-5 h-5 flex-shrink-0 transition-colors", isActive ? "text-white" : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white")} />
 
-                            {/* Label */}
-                            <span className={cn(
-                                "whitespace-nowrap transition-all duration-300 origin-left",
-                                isOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 absolute pointer-events-none"
-                            )}>
-                                {item.label}
-                            </span>
-
-                            {/* Tooltip for Collapsed State */}
-                            {!isOpen && (
-                                <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-black text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none border border-gray-700 dark:border-gray-200 shadow-xl">
+                                {/* Label */}
+                                <span className={cn(
+                                    "whitespace-nowrap transition-all duration-300 origin-left",
+                                    isOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 absolute pointer-events-none"
+                                )}>
                                     {item.label}
-                                </div>
-                            )}
-                        </Link>
-                    );
-                })}
-            </nav>
+                                </span>
 
-            {/* Footer Actions (Theme + Logout) */}
-            <div className={cn("p-3 border-t space-y-2", "border-gray-200 dark:border-gray-800")}>
+                                {/* Tooltip for Collapsed State */}
+                                {!isOpen && (
+                                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-black text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none border border-gray-700 dark:border-gray-200 shadow-xl">
+                                        {item.label}
+                                    </div>
+                                )}
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-                {/* Theme Toggle */}
-                <button
-                    onClick={toggleTheme}
-                    title={!isOpen ? (isDark ? "Açık Tema" : "Koyu Tema") : undefined}
-                    className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full group overflow-hidden",
-                        isOpen ? "" : "justify-center",
-                        "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white"
-                    )}
-                >
-                    {isDark ? <Sun className="w-5 h-5 flex-shrink-0" /> : <Moon className="w-5 h-5 flex-shrink-0" />}
-                    {isOpen && <span className="whitespace-nowrap transition-opacity">{isDark ? 'Açık Tema' : 'Koyu Tema'}</span>}
-                </button>
+                {/* Footer Actions (Theme + Logout) */}
+                <div className={cn("p-3 border-t space-y-2", "border-gray-200 dark:border-gray-800")}>
 
-                {/* Logout */}
-                <button
-                    onClick={handleLogout}
-                    title={!isOpen ? "Çıkış Yap" : undefined}
-                    className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full group overflow-hidden",
-                        isOpen ? "" : "justify-center",
-                        "text-red-500/80 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400"
-                    )}
-                >
-                    <LogOut className="w-5 h-5 flex-shrink-0" />
-                    {isOpen && <span className="whitespace-nowrap transition-opacity">Çıkış Yap</span>}
-                </button>
-            </div>
-        </aside>
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        title={!isOpen ? (isDark ? "Açık Tema" : "Koyu Tema") : undefined}
+                        className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full group overflow-hidden",
+                            isOpen ? "" : "justify-center",
+                            "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white"
+                        )}
+                    >
+                        {isDark ? <Sun className="w-5 h-5 flex-shrink-0" /> : <Moon className="w-5 h-5 flex-shrink-0" />}
+                        {isOpen && <span className="whitespace-nowrap transition-opacity">{isDark ? 'Açık Tema' : 'Koyu Tema'}</span>}
+                    </button>
+
+                    {/* Logout */}
+                    <button
+                        onClick={handleLogout}
+                        title={!isOpen ? "Çıkış Yap" : undefined}
+                        className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full group overflow-hidden",
+                            isOpen ? "" : "justify-center",
+                            "text-red-500/80 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400"
+                        )}
+                    >
+                        <LogOut className="w-5 h-5 flex-shrink-0" />
+                        {isOpen && <span className="whitespace-nowrap transition-opacity">Çıkış Yap</span>}
+                    </button>
+                </div>
+            </aside>
+
+            {/* Mobile Backdrop */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm"
+                    onClick={toggle}
+                />
+            )}
+        </>
     );
 }

@@ -1,18 +1,99 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from 'react';
-import { Loader2, Plus, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
+import { Loader2, Plus, Trash2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { HomePageData } from '@/types';
+import { ICON_MAP, SUPPORTED_ICONS, IconName } from '@/components/ui/icons';
+
+const IconPicker = ({ selectedIcon, onSelect }: { selectedIcon?: string, onSelect: (icon: string) => void }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const SelectedIconComponent = selectedIcon && ICON_MAP[selectedIcon] ? ICON_MAP[selectedIcon] : null;
+
+    return (
+        <div className="" ref={wrapperRef}>
+            <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between p-3 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors gap-3"
+            >
+                <div className="flex items-center gap-3">
+                    {SelectedIconComponent ? (
+                        <div className="p-1.5 bg-orange-100 dark:bg-orange-900/30 rounded-md text-orange-600 dark:text-orange-400">
+                            <SelectedIconComponent className="w-5 h-5" />
+                        </div>
+                    ) : (
+                        <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-md" />
+                    )}
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {selectedIcon || 'İkon Seçiniz'}
+                    </span>
+                </div>
+                {isOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+            </button>
+
+            {isOpen && (
+                <div className="absolute top-full left-0 right-0 mt-2 z-50 p-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-xl animate-in fade-in zoom-in-95 duration-200">
+                    <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-60 overflow-y-auto custom-scrollbar">
+                        {SUPPORTED_ICONS.map((iconName) => {
+                            const IconComponent = ICON_MAP[iconName];
+                            const isSelected = selectedIcon === iconName;
+
+                            return (
+                                <button
+                                    key={iconName}
+                                    type="button"
+                                    onClick={() => {
+                                        onSelect(iconName);
+                                        setIsOpen(false);
+                                    }}
+                                    title={iconName}
+                                    className={`
+                                        p-2 rounded-lg flex items-center justify-center transition-all
+                                        ${isSelected
+                                            ? 'bg-orange-500 text-white shadow-sm ring-2 ring-orange-200 dark:ring-orange-900'
+                                            : 'bg-gray-50 dark:bg-gray-800 text-gray-500 hover:bg-orange-100 dark:hover:bg-orange-900/40 hover:text-orange-600'
+                                        }
+                                    `}
+                                >
+                                    <IconComponent className="w-5 h-5" />
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 const INITIAL: HomePageData = {
-    hero: { title: { tr: '', en: '' }, subtitle: { tr: '', en: '' }, ctaText: { tr: '', en: '' } },
+    hero: { title: { tr: '', en: '' }, subtitle: { tr: '', en: '' } },
     stats: {
         yearsLabel: { tr: '', en: '' }, yearsValue: 0,
         projectsLabel: { tr: '', en: '' }, projectsValue: 0,
         satisfactionLabel: { tr: '', en: '' }, satisfactionValue: 0,
         citiesLabel: { tr: '', en: '' }, citiesValue: 0,
     },
-    features: []
+    features: [],
+    about: {
+        title: { tr: '', en: '' },
+        description: { tr: '', en: '' },
+        philosophy: { tr: '', en: '' },
+        sinceDate: { tr: '', en: '' },
+        tagline: { tr: '', en: '' }
+    }
 };
 
 // Helper component for bilingual inputs
@@ -55,7 +136,17 @@ export default function HomePageForm() {
     useEffect(() => {
         fetch('/api/pages/home')
             .then(r => r.json())
-            .then(j => setData(j.data || INITIAL))
+            .then(j => {
+                const fetched = j.data || {};
+                setData({
+                    ...INITIAL,
+                    ...fetched,
+                    // Ensure nested objects are merged if they exist in INITIAL but not fetched
+                    about: fetched.about || INITIAL.about,
+                    hero: { ...INITIAL.hero, ...fetched.hero }, // Deep merge hero if needed, or just safe fallback
+                    stats: { ...INITIAL.stats, ...fetched.stats }
+                });
+            })
             .catch(() => setError('Veri yüklenemedi'))
             .finally(() => setLoading(false));
     }, []);
@@ -118,7 +209,7 @@ export default function HomePageForm() {
             {/* HERO SECTION */}
             <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
                 <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Hero Alanı</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <BilingualInput label="Başlık"
                         valueTr={data.hero?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['hero', 'title', 'tr'], v)}
                         valueEn={data.hero?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['hero', 'title', 'en'], v)}
@@ -126,10 +217,6 @@ export default function HomePageForm() {
                     <BilingualInput label="Alt Başlık"
                         valueTr={data.hero?.subtitle?.tr || ''} onChangeTr={(v: string) => handleUpdate(['hero', 'subtitle', 'tr'], v)}
                         valueEn={data.hero?.subtitle?.en || ''} onChangeEn={(v: string) => handleUpdate(['hero', 'subtitle', 'en'], v)}
-                    />
-                    <BilingualInput label="Buton Metni"
-                        valueTr={data.hero?.ctaText?.tr || ''} onChangeTr={(v: string) => handleUpdate(['hero', 'ctaText', 'tr'], v)}
-                        valueEn={data.hero?.ctaText?.en || ''} onChangeEn={(v: string) => handleUpdate(['hero', 'ctaText', 'en'], v)}
                     />
                 </div>
             </div>
@@ -142,9 +229,9 @@ export default function HomePageForm() {
                     <div className="p-4 bg-gray-50 dark:bg-gray-900/30 rounded-xl border border-gray-100 dark:border-gray-800">
                         <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 mb-2">YILLAR (Değer)</label>
                         <input
-                            type="number"
+                            type="text"
                             value={data.stats?.yearsValue || 0}
-                            onChange={e => handleUpdate(['stats', 'yearsValue'], Number(e.target.value))}
+                            onChange={e => handleUpdate(['stats', 'yearsValue'], e.target.value)}
                             className="w-full mb-4 p-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-bold text-center text-gray-900 dark:text-white focus:outline-none focus:border-orange-500"
                         />
                         <BilingualInput label="Etiket"
@@ -157,9 +244,9 @@ export default function HomePageForm() {
                     <div className="p-4 bg-gray-50 dark:bg-gray-900/30 rounded-xl border border-gray-100 dark:border-gray-800">
                         <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 mb-2">PROJELER (Değer)</label>
                         <input
-                            type="number"
+                            type="text"
                             value={data.stats?.projectsValue || 0}
-                            onChange={e => handleUpdate(['stats', 'projectsValue'], Number(e.target.value))}
+                            onChange={e => handleUpdate(['stats', 'projectsValue'], e.target.value)}
                             className="w-full mb-4 p-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-bold text-center text-gray-900 dark:text-white focus:outline-none focus:border-orange-500"
                         />
                         <BilingualInput label="Etiket"
@@ -172,9 +259,9 @@ export default function HomePageForm() {
                     <div className="p-4 bg-gray-50 dark:bg-gray-900/30 rounded-xl border border-gray-100 dark:border-gray-800">
                         <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 mb-2">MEMNUNİYET (%)</label>
                         <input
-                            type="number"
+                            type="text"
                             value={data.stats?.satisfactionValue || 0}
-                            onChange={e => handleUpdate(['stats', 'satisfactionValue'], Number(e.target.value))}
+                            onChange={e => handleUpdate(['stats', 'satisfactionValue'], e.target.value)}
                             className="w-full mb-4 p-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-bold text-center text-gray-900 dark:text-white focus:outline-none focus:border-orange-500"
                         />
                         <BilingualInput label="Etiket"
@@ -187,15 +274,85 @@ export default function HomePageForm() {
                     <div className="p-4 bg-gray-50 dark:bg-gray-900/30 rounded-xl border border-gray-100 dark:border-gray-800">
                         <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 mb-2">ŞEHİRLER (Değer)</label>
                         <input
-                            type="number"
+                            type="text"
                             value={data.stats?.citiesValue || 0}
-                            onChange={e => handleUpdate(['stats', 'citiesValue'], Number(e.target.value))}
+                            onChange={e => handleUpdate(['stats', 'citiesValue'], e.target.value)}
                             className="w-full mb-4 p-2 bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-bold text-center text-gray-900 dark:text-white focus:outline-none focus:border-orange-500"
                         />
                         <BilingualInput label="Etiket"
                             valueTr={data.stats?.citiesLabel?.tr || ''} onChangeTr={(v: string) => handleUpdate(['stats', 'citiesLabel', 'tr'], v)}
                             valueEn={data.stats?.citiesLabel?.en || ''} onChangeEn={(v: string) => handleUpdate(['stats', 'citiesLabel', 'en'], v)}
                         />
+                    </div>
+                </div>
+            </div>
+
+            {/* ABOUT SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
+                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Hakkımızda Alanı</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BilingualInput label="Başlık"
+                        valueTr={data.about?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'title', 'tr'], v)}
+                        valueEn={data.about?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'title', 'en'], v)}
+                    />
+                    <BilingualInput label="Slogan (Tagline)"
+                        valueTr={data.about?.tagline?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'tagline', 'tr'], v)}
+                        valueEn={data.about?.tagline?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'tagline', 'en'], v)}
+                    />
+                    <BilingualInput label="Kuruluş Yılı / Metni"
+                        valueTr={data.about?.sinceDate?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'sinceDate', 'tr'], v)}
+                        valueEn={data.about?.sinceDate?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'sinceDate', 'en'], v)}
+                    />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Açıklama / Tarihçe</label>
+                        <div className="grid grid-cols-1 gap-2">
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.description?.tr || ''}
+                                    onChange={e => handleUpdate(['about', 'description', 'tr'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.description?.en || ''}
+                                    onChange={e => handleUpdate(['about', 'description', 'en'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Felsefe</label>
+                        <div className="grid grid-cols-1 gap-2">
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.philosophy?.tr || ''}
+                                    onChange={e => handleUpdate(['about', 'philosophy', 'tr'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.philosophy?.en || ''}
+                                    onChange={e => handleUpdate(['about', 'philosophy', 'en'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -252,6 +409,18 @@ export default function HomePageForm() {
                                         value={feature.description?.en || ''}
                                         onChange={e => handleUpdate(['features', idx.toString(), 'description', 'en'], e.target.value)}
                                         className="w-full p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                </div>
+
+                                {/* Icon Selection */}
+                                <div className="relative md:col-span-2 flex flex-col items-start">
+                                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">
+                                        İkon Seçimi
+                                    </label>
+
+                                    <IconPicker
+                                        selectedIcon={feature.icon}
+                                        onSelect={(icon) => handleUpdate(['features', idx.toString(), 'icon'], icon)}
                                     />
                                 </div>
                             </div>

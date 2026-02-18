@@ -25,7 +25,6 @@ export interface HomePageData {
     hero: {
         title: LocalizedString;
         subtitle: LocalizedString;
-        ctaText: LocalizedString;
     };
     stats: {
         yearsLabel: LocalizedString;
@@ -40,7 +39,15 @@ export interface HomePageData {
     features: Array<{
         title: LocalizedString;
         description: LocalizedString;
+        icon?: string;
     }>;
+    about: {
+        title: LocalizedString;
+        description: LocalizedString;
+        philosophy: LocalizedString;
+        sinceDate: LocalizedString;
+        tagline: LocalizedString;
+    };
 }
 
 export interface AboutPageData {

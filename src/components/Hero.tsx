@@ -9,11 +9,10 @@ interface HeroProps {
     title: string;
     subtitle: string;
     ctaText: string;
-    ctaLink?: string;
     contactText: string;
 }
 
-export default function Hero({ title, subtitle, ctaText, ctaLink = '/products', contactText }: HeroProps) {
+export default function Hero({ title, subtitle, ctaText, contactText }: HeroProps) {
     return (
         <section className="relative h-[100vh] w-full overflow-hidden flex items-center justify-center text-center md:text-left md:justify-start">
             {/* Background with Zoom Effect */}
@@ -63,7 +62,7 @@ export default function Hero({ title, subtitle, ctaText, ctaLink = '/products', 
                         className="flex flex-col sm:flex-row gap-4 pt-6 justify-center md:justify-start"
                     >
                         <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 shadow-xl transition-all" asChild>
-                            <Link href={ctaLink as any}>{ctaText}</Link>
+                            <Link href="/products">{ctaText}</Link>
                         </Button>
                         <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm" asChild>
                             <Link href="/contact">{contactText}</Link>
