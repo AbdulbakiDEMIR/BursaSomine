@@ -39,17 +39,6 @@ export default async function Home() {
   const selectedProjectIds = homeData?.selectedProjects || [];
   const selectedProjects = (allProjects || []).filter(p => selectedProjectIds.includes(p.id!));
 
-  // Featured Products Logic
-  const featuredProductIds = homeData?.featuredProducts?.selectedProductIds || [];
-  const MANUAL_SELECTION_ACTIVE = featuredProductIds.length > 0;
-
-  const featuredProducts = MANUAL_SELECTION_ACTIVE
-    ? (products || []).filter(p => featuredProductIds.includes(p.id!))
-    : (products || []).filter(p => p.isFeatured).slice(0, 3);
-
-  const featuredTitle = homeData?.featuredProducts?.title?.[locale] || t('featuredProjects.title');
-  const featuredSubtitle = homeData?.featuredProducts?.subtitle?.[locale] || t('featuredProjects.subtitle');
-
   // Hero verileri
   const heroTitle = homeData?.hero?.title?.[locale] ?? t('heroTitle');
   const heroSubtitle = homeData?.hero?.subtitle?.[locale] ?? t('heroSubtitle');
@@ -114,14 +103,6 @@ export default async function Home() {
         viewAllText={t('featuredProjects.viewAll')}
       />
 
-      {/* FeaturedProjects — API'den gelen isFeatured ürünleri (Optional: Keep or Remove based on preference, keeping for now as they are Products not Projects) */}
-      <FeaturedProjects
-        products={featuredProducts}
-        locale={locale}
-        title={featuredTitle}
-        subtitle={featuredSubtitle}
-        viewAllText={t('featuredProjects.viewAll')}
-      />
 
       <ReviewsSection
         title={tReviews('title')}
