@@ -6,7 +6,8 @@
 
 import { Product, Category, HomePageData, AboutPageData, FaqPageData, SiteSettings } from '@/types';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3000');
 
 async function apiFetch<T>(path: string): Promise<T | null> {
     try {
