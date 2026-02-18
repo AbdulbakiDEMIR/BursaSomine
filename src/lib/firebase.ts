@@ -14,9 +14,25 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
+if (typeof window !== "undefined") {
+    console.log("Firebase Config:", {
+        projectId: firebaseConfig.projectId,
+        authDomain: firebaseConfig.authDomain,
+        storageBucket: firebaseConfig.storageBucket,
+        apiKey: firebaseConfig.apiKey ? "Set" : "Missing",
+        appId: firebaseConfig.appId ? "Set" : "Missing",
+    });
+}
+
 // Initialize Firebase
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+// Initialize Firestore with settings to avoid "offline" errors
+// This forces long polling instead of WebSockets which can be blocked or unstable
+import { initializeFirestore } from "firebase/firestore";
+export const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+});
 
 // Analytics'i sadece tarayıcı tarafında (client-side) başlat
 // Sunucu tarafında (window undefined ise) çalışmasını engelliyoruz
