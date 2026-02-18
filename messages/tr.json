@@ -127,29 +127,12 @@
             }
         }
     },
-    "PortfolioPage": {
-        "title": "Referanslarımız",
+    "ProjectsPage": {
+        "title": "Projelerimiz",
         "subtitle": "Tamamladığımız seçkin projelerden örnekler.",
-        "items": {
-            "1": {
-                "title": "Villa Bademli"
-            },
-            "2": {
-                "title": "Ofis Lounge"
-            },
-            "3": {
-                "title": "Dağ Evi Projesi"
-            },
-            "4": {
-                "title": "Modern Daire"
-            },
-            "5": {
-                "title": "Restaurant Şömine"
-            },
-            "6": {
-                "title": "Otel Lobisi"
-            }
-        }
+        "details": "Detayları Gör",
+        "location": "Konum",
+        "date": "Tarih"
     },
     "ContactPage": {
         "title": "İletişim",
@@ -175,7 +158,7 @@
         "home": "Anasayfa",
         "about": "Hakkımızda",
         "products": "Ürünler",
-        "portfolio": "Referanslar",
+        "projects": "Projeler",
         "contact": "İletişim"
     },
     "AboutPage": {

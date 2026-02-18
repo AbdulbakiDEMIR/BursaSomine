@@ -61,7 +61,7 @@ export default async function Footer() {
                         <nav className="flex flex-col gap-2 text-sm text-muted-foreground">
                             <Link href="/" className="hover:text-primary transition-colors inline-block w-fit">{tNav('home')}</Link>
                             <Link href="/about" className="hover:text-primary transition-colors inline-block w-fit">{tNav('about')}</Link>
-                            <Link href="/portfolio" className="hover:text-primary transition-colors inline-block w-fit">{tNav('portfolio')}</Link>
+                            <Link href="/projects" className="hover:text-primary transition-colors inline-block w-fit">{tNav('projects')}</Link>
                             <Link href="/contact" className="hover:text-primary transition-colors inline-block w-fit">{tNav('contact')}</Link>
                             <Link href="/faq" className="hover:text-primary transition-colors inline-block w-fit">{t('faq')}</Link>
                         </nav>

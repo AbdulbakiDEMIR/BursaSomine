@@ -21,6 +21,17 @@ export interface Category {
     image: string;
 }
 
+export interface Project {
+    id?: string;
+    title: LocalizedString;
+    description: LocalizedString;
+    image: string;
+    date?: string;
+    location?: LocalizedString;
+    isActive?: boolean;
+    createdAt: string;
+}
+
 export interface HomePageData {
     hero: {
         title: LocalizedString;
@@ -41,6 +52,12 @@ export interface HomePageData {
         description: LocalizedString;
         icon?: string;
     }>;
+    selectedProjects?: string[]; // IDs of selected projects
+    featuredProducts?: {
+        title: LocalizedString;
+        subtitle: LocalizedString;
+        selectedProductIds: string[];
+    };
     about: {
         title: LocalizedString;
         description: LocalizedString;

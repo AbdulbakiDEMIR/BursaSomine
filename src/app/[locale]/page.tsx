@@ -13,9 +13,10 @@ import InstagramFeed from '@/components/InstagramFeed';
 import FAQSection from '@/components/FAQSection';
 import ReviewsSection from '@/components/ReviewsSection';
 import ImageWithLoader from '@/components/ui/image-with-loader';
-import { apiGetProducts, apiGetCategories, apiGetFaqPage, apiGetHomePage, apiGetAboutPage } from '@/lib/apiClient';
+import { apiGetProducts, apiGetCategories, apiGetFaqPage, apiGetHomePage, apiGetAboutPage, apiGetProjects } from '@/lib/apiClient';
 import { Category } from '@/types';
 import { getLocale } from 'next-intl/server';
+import SelectedProjects from '@/components/SelectedProjects';
 
 export default async function Home() {
   const t = await getTranslations('HomePage');
@@ -25,13 +26,29 @@ export default async function Home() {
   const locale = (await getLocale()) as 'tr' | 'en';
 
   // API'den tüm verileri paralel olarak çek
-  const [homeData, aboutData, products, faqData, categories] = await Promise.all([
+  const [homeData, aboutData, products, faqData, categories, allProjects] = await Promise.all([
     apiGetHomePage(),
     apiGetAboutPage(),
     apiGetProducts(),
     apiGetFaqPage(),
     apiGetCategories(),
+    apiGetProjects(),
   ]);
+
+  // Selected Projects Logic
+  const selectedProjectIds = homeData?.selectedProjects || [];
+  const selectedProjects = (allProjects || []).filter(p => selectedProjectIds.includes(p.id!));
+
+  // Featured Products Logic
+  const featuredProductIds = homeData?.featuredProducts?.selectedProductIds || [];
+  const MANUAL_SELECTION_ACTIVE = featuredProductIds.length > 0;
+
+  const featuredProducts = MANUAL_SELECTION_ACTIVE
+    ? (products || []).filter(p => featuredProductIds.includes(p.id!))
+    : (products || []).filter(p => p.isFeatured).slice(0, 3);
+
+  const featuredTitle = homeData?.featuredProducts?.title?.[locale] || t('featuredProjects.title');
+  const featuredSubtitle = homeData?.featuredProducts?.subtitle?.[locale] || t('featuredProjects.subtitle');
 
   // Hero verileri
   const heroTitle = homeData?.hero?.title?.[locale] ?? t('heroTitle');
@@ -88,12 +105,21 @@ export default async function Home() {
 
       <Features features={features} />
 
-      {/* FeaturedProjects — API'den gelen isFeatured ürünleri */}
-      <FeaturedProjects
-        products={products ?? []}
+      {/* Selected Projects - Admin'den seçilen projeler */}
+      <SelectedProjects
+        projects={selectedProjects}
         locale={locale}
-        title={t('featuredProjects.title')}
+        title={t('featuredProjects.title')} // Using same translation key for now or could be specific
         subtitle={t('featuredProjects.subtitle')}
+        viewAllText={t('featuredProjects.viewAll')}
+      />
+
+      {/* FeaturedProjects — API'den gelen isFeatured ürünleri (Optional: Keep or Remove based on preference, keeping for now as they are Products not Projects) */}
+      <FeaturedProjects
+        products={featuredProducts}
+        locale={locale}
+        title={featuredTitle}
+        subtitle={featuredSubtitle}
         viewAllText={t('featuredProjects.viewAll')}
       />
 

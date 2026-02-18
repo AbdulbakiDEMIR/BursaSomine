@@ -59,9 +59,15 @@ export async function verifySessionCookie(sessionCookie: string) {
 export async function revokeSessionCookie(sessionCookie: string): Promise<void> {
     try {
         const auth = getAuth(getAdminApp());
-        const decoded = await auth.verifySessionCookie(sessionCookie);
-        await auth.revokeRefreshTokens(decoded.uid);
+        const decodedToken = await auth.verifySessionCookie(sessionCookie);
+        await auth.revokeRefreshTokens(decodedToken.uid);
     } catch {
         // Zaten geçersizse sessizce geç
     }
+}
+
+import { getFirestore } from 'firebase-admin/firestore';
+
+export function getAdminDb() {
+    return getFirestore(getAdminApp());
 }

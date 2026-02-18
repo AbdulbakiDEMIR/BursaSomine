@@ -4,7 +4,7 @@
  * Server Component'lerde absolute URL gerektiği için BASE_URL kullanılır.
  */
 
-import { Product, Category, HomePageData, AboutPageData, FaqPageData, SiteSettings } from '@/types';
+import { Product, Project, Category, HomePageData, AboutPageData, FaqPageData, SiteSettings } from '@/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
     (process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3000');
@@ -37,6 +37,9 @@ export const apiGetCategory = (id: string) => apiFetch<Category>(`/api/categorie
 export const apiGetHomePage = () => apiFetch<HomePageData>('/api/pages/home');
 export const apiGetAboutPage = () => apiFetch<AboutPageData>('/api/pages/about');
 export const apiGetFaqPage = () => apiFetch<FaqPageData>('/api/pages/faq');
+
+// --- Projects ---
+export const apiGetProjects = () => apiFetch<Project[]>('/api/projects');
 
 // --- Site Settings ---
 export const apiGetSiteSettings = () => apiFetch<SiteSettings>('/api/site-settings');

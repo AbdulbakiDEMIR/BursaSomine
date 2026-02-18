@@ -127,29 +127,12 @@
             }
         }
     },
-    "PortfolioPage": {
-        "title": "Our References",
+    "ProjectsPage": {
+        "title": "Our Projects",
         "subtitle": "Examples of distinguished projects we have completed.",
-        "items": {
-            "1": {
-                "title": "Villa Bademli"
-            },
-            "2": {
-                "title": "Office Lounge"
-            },
-            "3": {
-                "title": "Mountain House Project"
-            },
-            "4": {
-                "title": "Modern Apartment"
-            },
-            "5": {
-                "title": "Restaurant Fireplace"
-            },
-            "6": {
-                "title": "Hotel Lobby"
-            }
-        }
+        "details": "View Details",
+        "location": "Location",
+        "date": "Date"
     },
     "ContactPage": {
         "title": "Contact",
@@ -175,7 +158,7 @@
         "home": "Home",
         "about": "About Us",
         "products": "Products",
-        "portfolio": "Portfolio",
+        "projects": "Projects",
         "contact": "Contact"
     },
     "AboutPage": {

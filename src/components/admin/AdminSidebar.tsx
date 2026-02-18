@@ -37,6 +37,7 @@ const NAV_ITEMS = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
     { href: '/admin/products', label: 'Ürünler', icon: Package },
     { href: '/admin/categories', label: 'Kategoriler', icon: Tag },
+    { href: '/admin/projects', label: 'Projeler', icon: FileText },
     { href: '/admin/pages', label: 'Sayfa İçerikleri', icon: FileText },
     { href: '/admin/settings', label: 'Site Ayarları', icon: Settings },
 ];

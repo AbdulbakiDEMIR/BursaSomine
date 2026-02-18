@@ -2,8 +2,10 @@
 
 import { useState, useEffect, FormEvent, useRef } from 'react';
 import { Loader2, Plus, Trash2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { HomePageData } from '@/types';
+import { HomePageData, Project, Product } from '@/types';
 import { ICON_MAP, SUPPORTED_ICONS, IconName } from '@/components/ui/icons';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 const IconPicker = ({ selectedIcon, onSelect }: { selectedIcon?: string, onSelect: (icon: string) => void }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -93,6 +95,11 @@ const INITIAL: HomePageData = {
         philosophy: { tr: '', en: '' },
         sinceDate: { tr: '', en: '' },
         tagline: { tr: '', en: '' }
+    },
+    featuredProducts: {
+        title: { tr: '', en: '' },
+        subtitle: { tr: '', en: '' },
+        selectedProductIds: []
     }
 };
 
@@ -132,8 +139,48 @@ export default function HomePageForm() {
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+    const [availableProjects, setAvailableProjects] = useState<Project[]>([]);
+    const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
+
+    // Project Selection State
+    const [projectSearchTerm, setProjectSearchTerm] = useState('');
+    const [projectSortOrder, setProjectSortOrder] = useState<'newest' | 'oldest' | 'az' | 'za'>('newest');
+    const [showSelectedOnly, setShowSelectedOnly] = useState(false);
+
+    const filteredProjects = availableProjects
+        .filter(p => {
+            const isSelected = data.selectedProjects?.includes(p.id!);
+            const term = projectSearchTerm.toLowerCase();
+            const matchesSearch = p.title.tr.toLowerCase().includes(term) || p.title.en.toLowerCase().includes(term);
+
+            // If "Show Selected Only" is on, only show selected projects
+            if (showSelectedOnly) {
+                return isSelected && matchesSearch;
+            }
+
+            // Otherwise show all (that match search)
+            // Note: We might still want to hide "Passive" projects unless they are selected, 
+            // but for now let's focus on the user's request for "Selected Only".
+            // Let's keep the passive hiding logic implicitly or explicitly if needed, 
+            // but for "Available" list, usually we show everything unless filtered.
+            // If the user wants to see "Active" status, they can see the badge.
+            // Let's just show everything that matches search.
+            const isActive = p.isActive !== false;
+            return matchesSearch && (isActive || isSelected); // Show active OR selected (even if passive)
+        })
+        .sort((a, b) => {
+            const dateA = a.date ? new Date(a.date).getTime() : 0;
+            const dateB = b.date ? new Date(b.date).getTime() : 0;
+
+            if (projectSortOrder === 'newest') return dateB - dateA;
+            if (projectSortOrder === 'oldest') return dateA - dateB;
+            if (projectSortOrder === 'az') return (a.title.tr || '').localeCompare(b.title.tr || '');
+            if (projectSortOrder === 'za') return (b.title.tr || '').localeCompare(a.title.tr || '');
+            return 0;
+        });
 
     useEffect(() => {
+        // Fetch Homepage Data
         fetch('/api/pages/home')
             .then(r => r.json())
             .then(j => {
@@ -141,14 +188,36 @@ export default function HomePageForm() {
                 setData({
                     ...INITIAL,
                     ...fetched,
-                    // Ensure nested objects are merged if they exist in INITIAL but not fetched
                     about: fetched.about || INITIAL.about,
-                    hero: { ...INITIAL.hero, ...fetched.hero }, // Deep merge hero if needed, or just safe fallback
-                    stats: { ...INITIAL.stats, ...fetched.stats }
+                    hero: { ...INITIAL.hero, ...fetched.hero },
+                    stats: { ...INITIAL.stats, ...fetched.stats },
+                    selectedProjects: fetched.selectedProjects || [],
+                    featuredProducts: { ...INITIAL.featuredProducts, ...(fetched.featuredProducts || {}) }
                 });
             })
             .catch(() => setError('Veri yüklenemedi'))
             .finally(() => setLoading(false));
+
+        // Fetch Available Projects (Client-Side)
+        const fetchProjects = async () => {
+            try {
+                const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Project));
+                setAvailableProjects(items);
+            } catch (err) {
+                console.error('Projects fetch error:', err);
+            }
+        };
+        fetchProjects();
+
+        // Fetch Available Products
+        fetch('/api/products')
+            .then(r => r.json())
+            .then(j => {
+                if (j.success) setAvailableProducts(j.data);
+            })
+            .catch(console.error);
     }, []);
 
     async function handleSave(e: FormEvent) {
@@ -283,6 +352,194 @@ export default function HomePageForm() {
                             valueTr={data.stats?.citiesLabel?.tr || ''} onChangeTr={(v: string) => handleUpdate(['stats', 'citiesLabel', 'tr'], v)}
                             valueEn={data.stats?.citiesLabel?.en || ''} onChangeEn={(v: string) => handleUpdate(['stats', 'citiesLabel', 'en'], v)}
                         />
+                    </div>
+                </div>
+            </div>
+
+            {/* SELECTED PROJECTS SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
+                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Ana Sayfada Gösterilecek Projeler (Maks 3)</h3>
+
+                {/* Toolbar */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-between">
+                    <div className="relative flex-1">
+                        <input
+                            type="text"
+                            placeholder="Proje ara..."
+                            value={projectSearchTerm}
+                            onChange={(e) => setProjectSearchTerm(e.target.value)}
+                            className="w-full pl-3 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-black text-gray-900 dark:text-white"
+                        />
+                    </div>
+                    <select
+                        value={projectSortOrder}
+                        onChange={(e) => setProjectSortOrder(e.target.value as any)}
+                        className="py-2 pl-3 pr-8 border border-gray-200 dark:border-gray-700 rounded-lg text-sm bg-white dark:bg-black text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    >
+                        <option value="newest">En Yeni</option>
+                        <option value="oldest">En Eski</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowSelectedOnly(!showSelectedOnly)}
+                        className={`
+                            flex items-center gap-2 px-3 py-2 rounded-lg border transition-all text-sm font-medium
+                            ${showSelectedOnly
+                                ? 'bg-orange-50 border-orange-200 text-orange-700 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400'
+                                : 'bg-gray-50 border-gray-200 text-gray-600 dark:bg-gray-900/50 dark:border-gray-800 dark:text-gray-400'
+                            }
+                        `}
+                    >
+                        <CheckCircle2 className="w-4 h-4" />
+                        {showSelectedOnly ? 'Seçilenler' : 'Tümü'}
+                    </button>
+                </div>
+
+                {/* List View */}
+                <div className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar border border-gray-100 dark:border-gray-800 rounded-lg p-1">
+                    {filteredProjects.map((project) => {
+                        const isSelected = data.selectedProjects?.includes(project.id!);
+                        return (
+                            <div
+                                key={project.id}
+                                onClick={() => {
+                                    const current = data.selectedProjects || [];
+                                    if (isSelected) {
+                                        setData(prev => ({ ...prev, selectedProjects: current.filter(id => id !== project.id) }));
+                                    } else {
+                                        if (current.length >= 3) {
+                                            alert('En fazla 3 proje seçebilirsiniz.');
+                                            return;
+                                        }
+                                        setData(prev => ({ ...prev, selectedProjects: [...current, project.id!] }));
+                                    }
+                                }}
+                                className={`
+                                    cursor-pointer p-3 rounded-lg border transition-all flex items-center gap-4 group
+                                    ${isSelected
+                                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
+                                        : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-900/50'
+                                    }
+                                `}
+                            >
+                                {/* Checkbox */}
+                                <div className={`
+                                    w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 transition-colors
+                                    ${isSelected
+                                        ? 'bg-orange-500 border-orange-500'
+                                        : 'border-gray-300 dark:border-gray-600 group-hover:border-orange-400'
+                                    }
+                                `}>
+                                    {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
+                                </div>
+
+                                {/* Image */}
+                                {project.image ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={project.image} alt={project.title.tr} className="w-12 h-12 object-cover rounded-md bg-gray-200" />
+                                ) : (
+                                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center text-xs text-gray-400">No Img</div>
+                                )}
+
+                                {/* Content */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-sm text-gray-900 dark:text-white truncate">{project.title.tr}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{project.title.en}</div>
+                                </div>
+
+                                {/* Date */}
+                                <div className="text-right">
+                                    <div className="text-xs text-gray-400 hidden sm:block">
+                                        {project.date ? new Date(project.date).toLocaleDateString() : '-'}
+                                    </div>
+                                    {project.isActive === false && (
+                                        <span className="inline-block mt-1 px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-500 text-[10px] uppercase font-bold rounded">
+                                            Pasif
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+                    {filteredProjects.length === 0 && (
+                        <div className="text-center text-gray-500 text-sm py-8">
+                            {availableProjects.length === 0 ? (
+                                <>Henüz proje eklenmemiş. <a href="/admin/seed" className="text-orange-500 underline">Örnek Proje Ekle</a></>
+                            ) : (
+                                'Aramanızla eşleşen proje bulunamadı.'
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="text-xs text-right text-gray-500">
+                    Seçilen: <span className="font-medium text-orange-600">{data.selectedProjects?.length || 0}/3</span>
+                </div>
+            </div>
+
+            {/* FEATURED PRODUCTS SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
+                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Öne Çıkan Ürünler Ayarları</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BilingualInput label="Başlık"
+                        valueTr={data.featuredProducts?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['featuredProducts', 'title', 'tr'], v)}
+                        valueEn={data.featuredProducts?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['featuredProducts', 'title', 'en'], v)}
+                    />
+                    <BilingualInput label="Alt Başlık"
+                        valueTr={data.featuredProducts?.subtitle?.tr || ''} onChangeTr={(v: string) => handleUpdate(['featuredProducts', 'subtitle', 'tr'], v)}
+                        valueEn={data.featuredProducts?.subtitle?.en || ''} onChangeEn={(v: string) => handleUpdate(['featuredProducts', 'subtitle', 'en'], v)}
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">Gösterilecek Ürünler (Maks 10)</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar p-1">
+                        {availableProducts.map((product) => {
+                            const isSelected = data.featuredProducts?.selectedProductIds?.includes(product.id!);
+                            return (
+                                <div
+                                    key={product.id}
+                                    onClick={() => {
+                                        const current = data.featuredProducts?.selectedProductIds || [];
+                                        if (isSelected) {
+                                            setData(prev => update(prev, ['featuredProducts', 'selectedProductIds'], current.filter(id => id !== product.id)));
+                                        } else {
+                                            if (current.length >= 10) {
+                                                alert('En fazla 10 ürün seçebilirsiniz.');
+                                                return;
+                                            }
+                                            setData(prev => update(prev, ['featuredProducts', 'selectedProductIds'], [...current, product.id!]));
+                                        }
+                                    }}
+                                    className={`
+                                        cursor-pointer p-3 rounded-xl border transition-all flex items-start gap-3 relative
+                                        ${isSelected
+                                            ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 ring-1 ring-orange-500'
+                                            : 'border-gray-200 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-700'
+                                        }
+                                    `}
+                                >
+                                    <div className={`
+                                        w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 mt-0.5
+                                        ${isSelected ? 'bg-orange-500 border-orange-500' : 'border-gray-300 dark:border-gray-600'}
+                                    `}>
+                                        {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-medium text-sm text-gray-900 dark:text-white truncate">{product.name.tr}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">{product.category}</div>
+                                    </div>
+                                    {product.images && product.images[0] && (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={product.images[0]} alt={product.name.tr} className="w-8 h-8 object-cover rounded-md bg-gray-100" />
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
