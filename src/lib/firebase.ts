@@ -14,16 +14,6 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-if (typeof window !== "undefined") {
-    console.log("Firebase Config:", {
-        projectId: firebaseConfig.projectId,
-        authDomain: firebaseConfig.authDomain,
-        storageBucket: firebaseConfig.storageBucket,
-        apiKey: firebaseConfig.apiKey ? "Set" : "Missing",
-        appId: firebaseConfig.appId ? "Set" : "Missing",
-    });
-}
-
 // Initialize Firebase
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
