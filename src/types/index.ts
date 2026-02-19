@@ -58,6 +58,17 @@ export interface HomePageData {
         subtitle: LocalizedString;
         selectedProductIds: string[];
     };
+    process?: {
+        steps: Array<{
+            title: LocalizedString;
+            description: LocalizedString;
+            icon: string;
+        }>;
+    };
+    categories?: {
+        title: LocalizedString;
+        subtitle: LocalizedString;
+    };
     about: {
         title: LocalizedString;
         description: LocalizedString;
@@ -65,15 +76,36 @@ export interface HomePageData {
         sinceDate: LocalizedString;
         tagline: LocalizedString;
     };
+    reviews?: {
+        id: string;
+        author: string;
+        rating: number; // 1-5
+        date: string;
+        text: string;
+    }[];
 }
 
 export interface AboutPageData {
-    history: LocalizedString;
+    history: Array<{
+        date: string;
+        description: LocalizedString;
+    }>;
+    image: string;
+    features: Array<{
+        title: LocalizedString;
+        icon: string;
+    }>;
     vision: LocalizedString;
     mission: {
         tr: string[];
         en: string[];
     };
+    values: Array<{
+        icon: string;
+        title: LocalizedString;
+        description: LocalizedString;
+    }>;
+    valuesDescription: LocalizedString;
 }
 
 export interface FaqPageData {

@@ -41,5 +41,9 @@ export const apiGetFaqPage = () => apiFetch<FaqPageData>('/api/pages/faq');
 // --- Projects ---
 export const apiGetProjects = () => apiFetch<Project[]>('/api/projects');
 
+// --- Google Reviews ---
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const apiGetGoogleReviews = (lang: string = 'tr') => apiFetch<any>(`/api/reviews?lang=${lang}`);
+
 // --- Site Settings ---
 export const apiGetSiteSettings = () => apiFetch<SiteSettings>('/api/site-settings');

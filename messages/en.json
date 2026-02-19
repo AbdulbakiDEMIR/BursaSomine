@@ -88,7 +88,8 @@
         "date2": "1 month ago",
         "review3": "Their after-sales support was very attentive. They answered all our questions immediately. Thanks for their interest.",
         "date3": "3 weeks ago",
-        "viewAll": "View all Google Reviews"
+        "viewAll": "View all Google Reviews",
+        "googleBasedOn": "Based on {count} reviews on Google"
     },
     "ProductsPage": {
         "title": "Our Products",

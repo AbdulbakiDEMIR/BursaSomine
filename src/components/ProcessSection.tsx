@@ -4,10 +4,12 @@ import { SectionWrapper } from '@/components/SectionWrapper';
 import { SectionHeader } from '@/components/SectionHeader';
 import { motion } from 'framer-motion';
 import { Search, PenTool, Hammer, Home, LucideIcon } from 'lucide-react';
+import { getIcon } from '@/components/ui/icons';
 
 interface StepItem {
     title: string;
     description: string;
+    icon?: string;
 }
 
 interface ProcessSectionProps {
@@ -27,7 +29,7 @@ export default function ProcessSection({ title, subtitle, steps }: ProcessSectio
                 <div className="hidden lg:block absolute top-12 left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-orange-200 via-orange-400 to-orange-200 -z-10" />
 
                 {steps.map((step, idx) => {
-                    const Icon = STEP_ICONS[idx % STEP_ICONS.length];
+                    const Icon = step.icon ? getIcon(step.icon) : STEP_ICONS[idx % STEP_ICONS.length];
                     return (
                         <motion.div
                             key={idx}

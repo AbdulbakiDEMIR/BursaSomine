@@ -4,6 +4,7 @@ import { SectionWrapper } from '@/components/SectionWrapper';
 import { SectionHeader } from '@/components/SectionHeader';
 import Image from 'next/image';
 import { Flame, Zap, Droplets, Trophy, Users, ShieldCheck, Target, Heart } from 'lucide-react';
+import { ICON_MAP } from '@/components/ui/icons';
 import { apiGetAboutPage } from '@/lib/apiClient';
 
 export default async function AboutPage() {
@@ -13,7 +14,6 @@ export default async function AboutPage() {
     const aboutData = await apiGetAboutPage();
 
     // API'den gelen veriler veya translation fallback
-    const historyText1 = aboutData?.history?.[locale] ?? t('historyText1');
     const visionText = aboutData?.vision?.[locale] ?? t('visionText');
     const missionItems = aboutData?.mission?.[locale] ?? [t('mission1'), t('mission2'), t('mission3')];
 
@@ -42,17 +42,29 @@ export default async function AboutPage() {
                     <div className="space-y-6">
                         <SectionHeader title={t('historyTitle')} className="text-left items-start" />
                         <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-                            <p>
-                                <span className="font-bold text-primary text-xl">1990</span> - {historyText1}
-                            </p>
-                            <p>
-                                <span className="font-bold text-primary text-xl">2011</span> - {t('historyText2')}
-                            </p>
+                            {/* Dynamic History from DB */}
+                            {aboutData?.history && Array.isArray(aboutData.history) && aboutData.history.length > 0 ? (
+                                aboutData.history.map((item, idx) => (
+                                    <p key={idx}>
+                                        <span className="font-bold text-primary text-xl">{item.date}</span> - {item.description?.[locale]}
+                                    </p>
+                                ))
+                            ) : (
+                                /* Fallback if no data */
+                                <>
+                                    <p>
+                                        <span className="font-bold text-primary text-xl">1990</span> - {t('historyText1')}
+                                    </p>
+                                    <p>
+                                        <span className="font-bold text-primary text-xl">2011</span> - {t('historyText2')}
+                                    </p>
+                                </>
+                            )}
                         </div>
                     </div>
                     <div className="relative aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                         <Image
-                            src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80"
+                            src={aboutData?.image || "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80"}
                             alt="Bursa Somine Factory/Workshop"
                             fill
                             className="object-cover"
@@ -61,59 +73,106 @@ export default async function AboutPage() {
                 </div>
             </SectionWrapper>
 
-            {/* Products Section */}
+            {/* Products / Features Section */}
             <SectionWrapper className="bg-muted/30">
                 <SectionHeader
                     title={t('productsTitle')}
                     subtitle={t('productsText')}
                 />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mb-2">
-                            <Flame className="w-8 h-8" />
-                        </div>
-                        <h3 className="text-xl font-bold">{t('product1')}</h3>
-                    </div>
-                    <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
-                        <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2">
-                            <Zap className="w-8 h-8" />
-                        </div>
-                        <h3 className="text-xl font-bold">{t('product2')}</h3>
-                    </div>
-                    <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
-                        <div className="w-16 h-16 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center mb-2">
-                            <Droplets className="w-8 h-8" />
-                        </div>
-                        <h3 className="text-xl font-bold">{t('product3')}</h3>
-                    </div>
+                    {/* Dynamic Features from DB */}
+                    {aboutData?.features && Array.isArray(aboutData.features) && aboutData.features.length > 0 ? (
+                        aboutData.features.map((item, idx) => {
+                            const IconComponent = ICON_MAP[item.icon] || Flame;
+                            // Renkleri sırayla döndür (opsiyonel görsel zenginlik için)
+                            const colors = [
+                                { bg: 'bg-orange-100', text: 'text-orange-600' },
+                                { bg: 'bg-blue-100', text: 'text-blue-600' },
+                                { bg: 'bg-cyan-100', text: 'text-cyan-600' },
+                            ];
+                            const color = colors[idx % colors.length];
+
+                            return (
+                                <div key={idx} className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
+                                    <div className={`w-16 h-16 rounded-full ${color.bg} ${color.text} flex items-center justify-center mb-2`}>
+                                        <IconComponent className="w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-xl font-bold">{item.title?.[locale]}</h3>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        /* Fallback */
+                        <>
+                            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
+                                <div className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mb-2">
+                                    <Flame className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-xl font-bold">{t('product1')}</h3>
+                            </div>
+                            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
+                                <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2">
+                                    <Zap className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-xl font-bold">{t('product2')}</h3>
+                            </div>
+                            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 flex flex-col items-center text-center space-y-4 hover:shadow-md transition-shadow">
+                                <div className="w-16 h-16 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center mb-2">
+                                    <Droplets className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-xl font-bold">{t('product3')}</h3>
+                            </div>
+                        </>
+                    )}
                 </div>
             </SectionWrapper>
 
             {/* Values Section */}
             <SectionWrapper>
-                <SectionHeader title={t('valuesTitle')} subtitle={t('philosophyText')} />
+                <SectionHeader
+                    title={t('valuesTitle')}
+                    subtitle={aboutData?.valuesDescription?.[locale] || t('philosophyText')}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0"><Trophy className="w-10 h-10" /></div>
-                        <div>
-                            <h4 className="text-lg font-bold mb-1">{t('value1')}</h4>
-                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0"><Heart className="w-10 h-10" /></div>
-                        <div>
-                            <h4 className="text-lg font-bold mb-1">{t('value2')}</h4>
-                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
-                        <div className="flex-shrink-0"><ShieldCheck className="w-10 h-10" /></div>
-                        <div>
-                            <h4 className="text-lg font-bold mb-1">{t('value3')}</h4>
-                            <p className="text-sm opacity-80">{t('philosophyText')}</p>
-                        </div>
-                    </div>
+                    {aboutData?.values && Array.isArray(aboutData.values) && aboutData.values.length > 0 ? (
+                        aboutData.values.map((item, idx) => {
+                            const IconComponent = ICON_MAP[item.icon] || Trophy; // Default fallback icon
+                            return (
+                                <div key={idx} className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
+                                    <div className="flex-shrink-0"><IconComponent className="w-10 h-10" /></div>
+                                    <div>
+                                        <h4 className="text-lg font-bold mb-1">{item.title?.[locale]}</h4>
+                                        <p className="text-sm opacity-80">{item.description?.[locale]}</p>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        /* Fallback */
+                        <>
+                            <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
+                                <div className="flex-shrink-0"><Trophy className="w-10 h-10" /></div>
+                                <div>
+                                    <h4 className="text-lg font-bold mb-1">{t('value1')}</h4>
+                                    <p className="text-sm opacity-80">{t('philosophyText')}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
+                                <div className="flex-shrink-0"><Heart className="w-10 h-10" /></div>
+                                <div>
+                                    <h4 className="text-lg font-bold mb-1">{t('value2')}</h4>
+                                    <p className="text-sm opacity-80">{t('philosophyText')}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start space-x-4 p-6 rounded-lg bg-primary text-primary-foreground">
+                                <div className="flex-shrink-0"><ShieldCheck className="w-10 h-10" /></div>
+                                <div>
+                                    <h4 className="text-lg font-bold mb-1">{t('value3')}</h4>
+                                    <p className="text-sm opacity-80">{t('philosophyText')}</p>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </SectionWrapper>
 

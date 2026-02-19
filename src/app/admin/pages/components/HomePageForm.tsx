@@ -1,84 +1,13 @@
 "use client";
 
 import { useState, useEffect, FormEvent, useRef } from 'react';
-import { Loader2, Plus, Trash2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { HomePageData, Project, Product } from '@/types';
+import { Loader2, Plus, Trash2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Pencil, Upload } from 'lucide-react';
+import { HomePageData, Project, Product, Category } from '@/types';
 import { ICON_MAP, SUPPORTED_ICONS, IconName } from '@/components/ui/icons';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
-const IconPicker = ({ selectedIcon, onSelect }: { selectedIcon?: string, onSelect: (icon: string) => void }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const wrapperRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const SelectedIconComponent = selectedIcon && ICON_MAP[selectedIcon] ? ICON_MAP[selectedIcon] : null;
-
-    return (
-        <div className="" ref={wrapperRef}>
-            <button
-                type="button"
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between p-3 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors gap-3"
-            >
-                <div className="flex items-center gap-3">
-                    {SelectedIconComponent ? (
-                        <div className="p-1.5 bg-orange-100 dark:bg-orange-900/30 rounded-md text-orange-600 dark:text-orange-400">
-                            <SelectedIconComponent className="w-5 h-5" />
-                        </div>
-                    ) : (
-                        <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-md" />
-                    )}
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {selectedIcon || 'İkon Seçiniz'}
-                    </span>
-                </div>
-                {isOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-            </button>
-
-            {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-2 z-50 p-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-xl animate-in fade-in zoom-in-95 duration-200">
-                    <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-60 overflow-y-auto custom-scrollbar">
-                        {SUPPORTED_ICONS.map((iconName) => {
-                            const IconComponent = ICON_MAP[iconName];
-                            const isSelected = selectedIcon === iconName;
-
-                            return (
-                                <button
-                                    key={iconName}
-                                    type="button"
-                                    onClick={() => {
-                                        onSelect(iconName);
-                                        setIsOpen(false);
-                                    }}
-                                    title={iconName}
-                                    className={`
-                                        p-2 rounded-lg flex items-center justify-center transition-all
-                                        ${isSelected
-                                            ? 'bg-orange-500 text-white shadow-sm ring-2 ring-orange-200 dark:ring-orange-900'
-                                            : 'bg-gray-50 dark:bg-gray-800 text-gray-500 hover:bg-orange-100 dark:hover:bg-orange-900/40 hover:text-orange-600'
-                                        }
-                                    `}
-                                >
-                                    <IconComponent className="w-5 h-5" />
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
+import { IconPicker } from '@/components/admin/IconPicker';
 
 const INITIAL: HomePageData = {
     hero: { title: { tr: '', en: '' }, subtitle: { tr: '', en: '' } },
@@ -89,6 +18,13 @@ const INITIAL: HomePageData = {
         citiesLabel: { tr: '', en: '' }, citiesValue: 0,
     },
     features: [],
+    process: {
+        steps: []
+    },
+    categories: {
+        title: { tr: '', en: '' },
+        subtitle: { tr: '', en: '' }
+    },
     about: {
         title: { tr: '', en: '' },
         description: { tr: '', en: '' },
@@ -100,7 +36,8 @@ const INITIAL: HomePageData = {
         title: { tr: '', en: '' },
         subtitle: { tr: '', en: '' },
         selectedProductIds: []
-    }
+    },
+    reviews: []
 };
 
 // Helper component for bilingual inputs
@@ -134,6 +71,9 @@ const BilingualInput = ({ label, valueTr, valueEn, onChangeTr, onChangeEn, place
 );
 
 export default function HomePageForm() {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+    const [isCategorySaving, setIsCategorySaving] = useState(false);
     const [data, setData] = useState<HomePageData>(INITIAL);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -211,6 +151,12 @@ export default function HomePageForm() {
         };
         fetchProjects();
 
+        // Fetch Categories
+        fetch('/api/categories')
+            .then(r => r.json())
+            .then(j => setCategories(j.data ?? []))
+            .catch(console.error);
+
         // Fetch Available Products
         fetch('/api/products')
             .then(r => r.json())
@@ -221,22 +167,28 @@ export default function HomePageForm() {
     }, []);
 
     async function handleSave(e: FormEvent) {
-        e.preventDefault();
-        setSaving(true);
-        setSuccess('');
-        setError('');
+        // ... existing handleSave logic ...
+    }
+
+    async function saveCategory(cat: Category) {
+        setIsCategorySaving(true);
         try {
-            const res = await fetch('/api/pages/home', {
+            const res = await fetch(`/api/categories/${cat.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(cat),
             });
-            if (!res.ok) throw new Error('Kaydedilemedi');
-            setSuccess('Ana sayfa güncellendi!');
+            if (!res.ok) throw new Error('Kategori güncellenemedi');
+
+            setCategories(prev => prev.map(c => c.id === cat.id ? cat : c));
+            setEditingCategory(null);
+            setSuccess('Kategori başarıyla güncellendi!');
+            setTimeout(() => setSuccess(''), 3000);
         } catch (err) {
-            setError('Bir hata oluştu.');
+            setError('Kategori güncellenirken hata oluştu.');
+            setTimeout(() => setError(''), 3000);
         } finally {
-            setSaving(false);
+            setIsCategorySaving(false);
         }
     }
 
@@ -265,6 +217,26 @@ export default function HomePageForm() {
         setData(prev => ({
             ...prev,
             features: prev.features.filter((_, i) => i !== index)
+        }));
+    };
+
+    const addProcessStep = () => {
+        setData(prev => ({
+            ...prev,
+            process: {
+                ...prev.process!,
+                steps: [...(prev.process?.steps || []), { title: { tr: '', en: '' }, description: { tr: '', en: '' }, icon: '' }]
+            }
+        }));
+    };
+
+    const removeProcessStep = (index: number) => {
+        setData(prev => ({
+            ...prev,
+            process: {
+                ...prev.process!,
+                steps: (prev.process?.steps || []).filter((_, i) => i !== index)
+            }
         }));
     };
 
@@ -355,6 +327,243 @@ export default function HomePageForm() {
                     </div>
                 </div>
             </div>
+
+
+
+            {/* ABOUT SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
+                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Hakkımızda Alanı</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BilingualInput label="Başlık"
+                        valueTr={data.about?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'title', 'tr'], v)}
+                        valueEn={data.about?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'title', 'en'], v)}
+                    />
+                    <BilingualInput label="Slogan (Tagline)"
+                        valueTr={data.about?.tagline?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'tagline', 'tr'], v)}
+                        valueEn={data.about?.tagline?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'tagline', 'en'], v)}
+                    />
+                    <BilingualInput label="Kuruluş Yılı / Metni"
+                        valueTr={data.about?.sinceDate?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'sinceDate', 'tr'], v)}
+                        valueEn={data.about?.sinceDate?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'sinceDate', 'en'], v)}
+                    />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Açıklama / Tarihçe</label>
+                        <div className="grid grid-cols-1 gap-2">
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.description?.tr || ''}
+                                    onChange={e => handleUpdate(['about', 'description', 'tr'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.description?.en || ''}
+                                    onChange={e => handleUpdate(['about', 'description', 'en'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Felsefe</label>
+                        <div className="grid grid-cols-1 gap-2">
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.philosophy?.tr || ''}
+                                    onChange={e => handleUpdate(['about', 'philosophy', 'tr'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                            <div className="relative">
+                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
+                                <textarea
+                                    rows={4}
+                                    value={data.about?.philosophy?.en || ''}
+                                    onChange={e => handleUpdate(['about', 'philosophy', 'en'], e.target.value)}
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            {/* FEATURES SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">Özellikler</h3>
+                    <button type="button" onClick={addFeature} className="flex items-center gap-1 text-xs bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors font-medium">
+                        <Plus className="w-3 h-3" /> Özellik Ekle
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                    {data.features?.map((feature, idx) => (
+                        <div key={idx} className="p-5 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl relative group shadow-sm hover:shadow-md transition-shadow">
+                            <button type="button" onClick={() => removeFeature(idx)} className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                <Trash2 className="w-4 h-4" />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* TR Sol */}
+                                <div className="bg-orange-50/30 dark:bg-orange-900/10 p-4 rounded-lg border border-orange-100/50 dark:border-orange-900/20">
+                                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400 mb-2 block uppercase tracking-wider">Türkçe</span>
+                                    <input
+                                        type="text"
+                                        placeholder="Başlık (TR)"
+                                        value={feature.title?.tr || ''}
+                                        onChange={e => handleUpdate(['features', idx.toString(), 'title', 'tr'], e.target.value)}
+                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                    <textarea
+                                        rows={2}
+                                        placeholder="Açıklama (TR)"
+                                        value={feature.description?.tr || ''}
+                                        onChange={e => handleUpdate(['features', idx.toString(), 'description', 'tr'], e.target.value)}
+                                        className="w-full p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                </div>
+
+                                {/* EN Sağ */}
+                                <div className="bg-blue-50/30 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-100/50 dark:border-blue-900/20">
+                                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 block uppercase tracking-wider">İngilizce</span>
+                                    <input
+                                        type="text"
+                                        placeholder="Title (EN)"
+                                        value={feature.title?.en || ''}
+                                        onChange={e => handleUpdate(['features', idx.toString(), 'title', 'en'], e.target.value)}
+                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                    <textarea
+                                        rows={2}
+                                        placeholder="Description (EN)"
+                                        value={feature.description?.en || ''}
+                                        onChange={e => handleUpdate(['features', idx.toString(), 'description', 'en'], e.target.value)}
+                                        className="w-full p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                </div>
+
+                                {/* Icon Selection */}
+                                <div className="relative md:col-span-2 flex flex-col items-start">
+                                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">
+                                        İkon Seçimi
+                                    </label>
+
+                                    <IconPicker
+                                        selectedIcon={feature.icon}
+                                        onSelect={(icon) => handleUpdate(['features', idx.toString(), 'icon'], icon)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {(!data.features || data.features.length === 0) && (
+                        <div className="text-center py-12 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-900/10">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Henüz özellik eklenmemiş.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+
+
+            {/* PROCESS SECTION */}
+            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">Nasıl Çalışıyoruz (Süreç)</h3>
+                    <button type="button" onClick={addProcessStep} className="flex items-center gap-1 text-xs bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors font-medium">
+                        <Plus className="w-3 h-3" /> Adım Ekle
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                    {data.process?.steps?.map((step, idx) => (
+                        <div key={idx} className="p-5 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl relative group shadow-sm hover:shadow-md transition-shadow">
+                            <button type="button" onClick={() => removeProcessStep(idx)} className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                <Trash2 className="w-4 h-4" />
+                            </button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <span className="absolute -left-3 -top-3 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white dark:border-black shadow-sm">
+                                    {idx + 1}
+                                </span>
+
+                                {/* TR Left */}
+                                <div className="bg-orange-50/30 dark:bg-orange-900/10 p-4 rounded-lg border border-orange-100/50 dark:border-orange-900/20">
+                                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400 mb-2 block uppercase tracking-wider">Türkçe</span>
+                                    <input
+                                        type="text"
+                                        placeholder="Adım Başlığı (TR)"
+                                        value={step.title?.tr || ''}
+                                        onChange={e => handleUpdate(['process', 'steps', idx.toString(), 'title', 'tr'], e.target.value)}
+                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                    <textarea
+                                        rows={2}
+                                        placeholder="Adım Açıklaması (TR)"
+                                        value={step.description?.tr || ''}
+                                        onChange={e => handleUpdate(['process', 'steps', idx.toString(), 'description', 'tr'], e.target.value)}
+                                        className="w-full p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                </div>
+
+                                {/* EN Right */}
+                                <div className="bg-blue-50/30 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-100/50 dark:border-blue-900/20">
+                                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 block uppercase tracking-wider">İngilizce</span>
+                                    <input
+                                        type="text"
+                                        placeholder="Step Title (EN)"
+                                        value={step.title?.en || ''}
+                                        onChange={e => handleUpdate(['process', 'steps', idx.toString(), 'title', 'en'], e.target.value)}
+                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                    <textarea
+                                        rows={2}
+                                        placeholder="Step Description (EN)"
+                                        value={step.description?.en || ''}
+                                        onChange={e => handleUpdate(['process', 'steps', idx.toString(), 'description', 'en'], e.target.value)}
+                                        className="w-full p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
+                                    />
+                                </div>
+
+                                {/* Icon Selection */}
+                                <div className="relative md:col-span-2 flex flex-col items-start">
+                                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">
+                                        İkon Seçimi
+                                    </label>
+
+                                    <IconPicker
+                                        selectedIcon={step.icon}
+                                        onSelect={(icon) => handleUpdate(['process', 'steps', idx.toString(), 'icon'], icon)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {(!data.process?.steps || data.process.steps.length === 0) && (
+                        <div className="text-center py-12 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-900/10">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Henüz süreç adımı eklenmemiş.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+
 
             {/* SELECTED PROJECTS SECTION */}
             <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
@@ -480,222 +689,138 @@ export default function HomePageForm() {
                 </div>
             </div>
 
-            {/* FEATURED PRODUCTS SECTION */}
+
+            {/* CATEGORIES SECTION */}
             <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
-                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Öne Çıkan Ürünler Ayarları</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <BilingualInput label="Başlık"
-                        valueTr={data.featuredProducts?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['featuredProducts', 'title', 'tr'], v)}
-                        valueEn={data.featuredProducts?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['featuredProducts', 'title', 'en'], v)}
-                    />
-                    <BilingualInput label="Alt Başlık"
-                        valueTr={data.featuredProducts?.subtitle?.tr || ''} onChangeTr={(v: string) => handleUpdate(['featuredProducts', 'subtitle', 'tr'], v)}
-                        valueEn={data.featuredProducts?.subtitle?.en || ''} onChangeEn={(v: string) => handleUpdate(['featuredProducts', 'subtitle', 'en'], v)}
-                    />
+                <div className="border-b border-gray-200 dark:border-gray-800 pb-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">Ürün Koleksiyonumuz (Kategoriler)</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Bu bölümden hem başlıkları hem de kategori detaylarını yönetebilirsiniz.</p>
                 </div>
 
-                <div>
-                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">Gösterilecek Ürünler (Maks 10)</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar p-1">
-                        {availableProducts.map((product) => {
-                            const isSelected = data.featuredProducts?.selectedProductIds?.includes(product.id!);
-                            return (
-                                <div
-                                    key={product.id}
-                                    onClick={() => {
-                                        const current = data.featuredProducts?.selectedProductIds || [];
-                                        if (isSelected) {
-                                            setData(prev => update(prev, ['featuredProducts', 'selectedProductIds'], current.filter(id => id !== product.id)));
-                                        } else {
-                                            if (current.length >= 10) {
-                                                alert('En fazla 10 ürün seçebilirsiniz.');
-                                                return;
-                                            }
-                                            setData(prev => update(prev, ['featuredProducts', 'selectedProductIds'], [...current, product.id!]));
-                                        }
-                                    }}
-                                    className={`
-                                        cursor-pointer p-3 rounded-xl border transition-all flex items-start gap-3 relative
-                                        ${isSelected
-                                            ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 ring-1 ring-orange-500'
-                                            : 'border-gray-200 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-700'
-                                        }
-                                    `}
-                                >
-                                    <div className={`
-                                        w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 mt-0.5
-                                        ${isSelected ? 'bg-orange-500 border-orange-500' : 'border-gray-300 dark:border-gray-600'}
-                                    `}>
-                                        {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
+                {/* Section Titles removed as per user request */}
+
+                {/* Category Items List */}
+                <div className="space-y-4">
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Kategori Listesi</label>
+                    <div className="grid grid-cols-1 gap-4">
+                        {categories.map(cat => (
+                            <div key={cat.id} className="p-4 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all">
+                                {editingCategory?.id === cat.id ? (
+                                    <div className="space-y-4 animate-in fade-in duration-300">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Edit TR */}
+                                            <div className="space-y-2">
+                                                <span className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase">Türkçe</span>
+                                                <input
+                                                    type="text"
+                                                    value={editingCategory.title.tr}
+                                                    onChange={e => setEditingCategory({ ...editingCategory, title: { ...editingCategory.title, tr: e.target.value } })}
+                                                    className="w-full p-2 border rounded-lg text-sm bg-white dark:bg-black dark:border-gray-700 focus:ring-2 focus:ring-orange-500 outline-none"
+                                                    placeholder="Kategori Adı (TR)"
+                                                />
+                                                <textarea
+                                                    rows={2}
+                                                    value={editingCategory.description.tr}
+                                                    onChange={e => setEditingCategory({ ...editingCategory, description: { ...editingCategory.description, tr: e.target.value } })}
+                                                    className="w-full p-2 border rounded-lg text-xs bg-white dark:bg-black dark:border-gray-700 focus:ring-2 focus:ring-orange-500 outline-none resize-none"
+                                                    placeholder="Açıklama (TR)"
+                                                />
+                                            </div>
+                                            {/* Edit EN */}
+                                            <div className="space-y-2">
+                                                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">İngilizce</span>
+                                                <input
+                                                    type="text"
+                                                    value={editingCategory.title.en}
+                                                    onChange={e => setEditingCategory({ ...editingCategory, title: { ...editingCategory.title, en: e.target.value } })}
+                                                    className="w-full p-2 border rounded-lg text-sm bg-white dark:bg-black dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                    placeholder="Category Name (EN)"
+                                                />
+                                                <textarea
+                                                    rows={2}
+                                                    value={editingCategory.description.en}
+                                                    onChange={e => setEditingCategory({ ...editingCategory, description: { ...editingCategory.description, en: e.target.value } })}
+                                                    className="w-full p-2 border rounded-lg text-xs bg-white dark:bg-black dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                                                    placeholder="Description (EN)"
+                                                />
+                                            </div>
+
+                                            {/* Image URL Input */}
+                                            <div className="md:col-span-2 space-y-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                                                <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider">Kategori Görseli (URL)</label>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={editingCategory.image || ''}
+                                                        onChange={e => setEditingCategory({ ...editingCategory, image: e.target.value })}
+                                                        className="flex-1 p-2 border rounded-lg text-sm bg-white dark:bg-black dark:border-gray-700 focus:ring-2 focus:ring-orange-500 outline-none"
+                                                        placeholder="https://..."
+                                                    />
+                                                    {/* Placeholder Upload Button - Consistent with ProjectForm */}
+                                                    <button type="button" className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                                        <Upload className="w-5 h-5 text-gray-500" />
+                                                    </button>
+                                                </div>
+                                                {editingCategory.image && (
+                                                    <div className="mt-2 flex relative h-32 overflow-hidden">
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                        <img src={editingCategory.image} alt="Önizleme" className=" h-full object-cover" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                                            <button
+                                                type="button"
+                                                onClick={() => setEditingCategory(null)}
+                                                className="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                                            >
+                                                İptal
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => saveCategory(editingCategory)}
+                                                disabled={isCategorySaving}
+                                                className="px-3 py-1.5 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors flex items-center gap-1"
+                                            >
+                                                {isCategorySaving && <Loader2 className="w-3 h-3 animate-spin" />}
+                                                Kaydet
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="font-medium text-sm text-gray-900 dark:text-white truncate">{product.name.tr}</div>
-                                        <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">{product.category}</div>
+                                ) : (
+                                    <div className="flex items-center justify-between group">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mr-4">
+                                            <div>
+                                                <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{cat.title.tr}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{cat.description.tr}</p>
+                                            </div>
+                                            <div className="hidden md:block opacity-60">
+                                                <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{cat.title.en}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{cat.description.en}</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setEditingCategory(cat)}
+                                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                                        >
+                                            <Pencil className="w-4 h-4" />
+                                        </button>
                                     </div>
-                                    {product.images && product.images[0] && (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={product.images[0]} alt={product.name.tr} className="w-8 h-8 object-cover rounded-md bg-gray-100" />
-                                    )}
-                                </div>
-                            );
-                        })}
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            {/* ABOUT SECTION */}
-            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
-                <h3 className="font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Hakkımızda Alanı</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <BilingualInput label="Başlık"
-                        valueTr={data.about?.title?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'title', 'tr'], v)}
-                        valueEn={data.about?.title?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'title', 'en'], v)}
-                    />
-                    <BilingualInput label="Slogan (Tagline)"
-                        valueTr={data.about?.tagline?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'tagline', 'tr'], v)}
-                        valueEn={data.about?.tagline?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'tagline', 'en'], v)}
-                    />
-                    <BilingualInput label="Kuruluş Yılı / Metni"
-                        valueTr={data.about?.sinceDate?.tr || ''} onChangeTr={(v: string) => handleUpdate(['about', 'sinceDate', 'tr'], v)}
-                        valueEn={data.about?.sinceDate?.en || ''} onChangeEn={(v: string) => handleUpdate(['about', 'sinceDate', 'en'], v)}
-                    />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Açıklama / Tarihçe</label>
-                        <div className="grid grid-cols-1 gap-2">
-                            <div className="relative">
-                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
-                                <textarea
-                                    rows={4}
-                                    value={data.about?.description?.tr || ''}
-                                    onChange={e => handleUpdate(['about', 'description', 'tr'], e.target.value)}
-                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
-                                />
-                            </div>
-                            <div className="relative">
-                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
-                                <textarea
-                                    rows={4}
-                                    value={data.about?.description?.en || ''}
-                                    onChange={e => handleUpdate(['about', 'description', 'en'], e.target.value)}
-                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-1">Felsefe</label>
-                        <div className="grid grid-cols-1 gap-2">
-                            <div className="relative">
-                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">TR</span>
-                                <textarea
-                                    rows={4}
-                                    value={data.about?.philosophy?.tr || ''}
-                                    onChange={e => handleUpdate(['about', 'philosophy', 'tr'], e.target.value)}
-                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-orange-50/30 dark:bg-orange-900/10 text-gray-900 dark:text-white"
-                                />
-                            </div>
-                            <div className="relative">
-                                <span className="absolute left-3 top-2 text-xs font-bold text-gray-400">EN</span>
-                                <textarea
-                                    rows={4}
-                                    value={data.about?.philosophy?.en || ''}
-                                    onChange={e => handleUpdate(['about', 'philosophy', 'en'], e.target.value)}
-                                    className="w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10 text-gray-900 dark:text-white"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* FEATURES SECTION */}
-            <div className="bg-white dark:bg-black p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
-                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Özellikler</h3>
-                    <button type="button" onClick={addFeature} className="flex items-center gap-1 text-xs bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors font-medium">
-                        <Plus className="w-3 h-3" /> Özellik Ekle
-                    </button>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                    {data.features?.map((feature, idx) => (
-                        <div key={idx} className="p-5 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl relative group shadow-sm hover:shadow-md transition-shadow">
-                            <button type="button" onClick={() => removeFeature(idx)} className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-                                <Trash2 className="w-4 h-4" />
-                            </button>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* TR Sol */}
-                                <div className="bg-orange-50/30 dark:bg-orange-900/10 p-4 rounded-lg border border-orange-100/50 dark:border-orange-900/20">
-                                    <span className="text-xs font-bold text-orange-600 dark:text-orange-400 mb-2 block uppercase tracking-wider">Türkçe</span>
-                                    <input
-                                        type="text"
-                                        placeholder="Başlık (TR)"
-                                        value={feature.title?.tr || ''}
-                                        onChange={e => handleUpdate(['features', idx.toString(), 'title', 'tr'], e.target.value)}
-                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
-                                    />
-                                    <textarea
-                                        rows={2}
-                                        placeholder="Açıklama (TR)"
-                                        value={feature.description?.tr || ''}
-                                        onChange={e => handleUpdate(['features', idx.toString(), 'description', 'tr'], e.target.value)}
-                                        className="w-full p-2 bg-white dark:bg-black border border-orange-200 dark:border-orange-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-orange-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
-                                    />
-                                </div>
-
-                                {/* EN Sağ */}
-                                <div className="bg-blue-50/30 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-100/50 dark:border-blue-900/20">
-                                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 block uppercase tracking-wider">İngilizce</span>
-                                    <input
-                                        type="text"
-                                        placeholder="Title (EN)"
-                                        value={feature.title?.en || ''}
-                                        onChange={e => handleUpdate(['features', idx.toString(), 'title', 'en'], e.target.value)}
-                                        className="w-full mb-2 p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
-                                    />
-                                    <textarea
-                                        rows={2}
-                                        placeholder="Description (EN)"
-                                        value={feature.description?.en || ''}
-                                        onChange={e => handleUpdate(['features', idx.toString(), 'description', 'en'], e.target.value)}
-                                        className="w-full p-2 bg-white dark:bg-black border border-blue-200 dark:border-blue-900/40 rounded-lg text-xs resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-600"
-                                    />
-                                </div>
-
-                                {/* Icon Selection */}
-                                <div className="relative md:col-span-2 flex flex-col items-start">
-                                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-400 uppercase tracking-wider mb-2">
-                                        İkon Seçimi
-                                    </label>
-
-                                    <IconPicker
-                                        selectedIcon={feature.icon}
-                                        onSelect={(icon) => handleUpdate(['features', idx.toString(), 'icon'], icon)}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                    {(!data.features || data.features.length === 0) && (
-                        <div className="text-center py-12 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-900/10">
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Henüz özellik eklenmemiş.</p>
-                        </div>
-                    )}
-                </div>
-            </div>
 
             <div className="flex justify-end pt-4 sticky bottom-4 z-10">
                 <button type="submit" disabled={saving} className="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center gap-2 shadow-lg shadow-orange-500/20">
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Değişiklikleri Kaydet
                 </button>
             </div>
-        </form>
+        </form >
     );
 }

@@ -7,13 +7,12 @@ import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import ProcessSection from '@/components/ProcessSection';
 import StatsSection from '@/components/StatsSection';
-import FeaturedProjects from '@/components/FeaturedProjects';
 import AboutSummary from '@/components/AboutSummary';
 import InstagramFeed from '@/components/InstagramFeed';
 import FAQSection from '@/components/FAQSection';
 import ReviewsSection from '@/components/ReviewsSection';
 import ImageWithLoader from '@/components/ui/image-with-loader';
-import { apiGetProducts, apiGetCategories, apiGetFaqPage, apiGetHomePage, apiGetAboutPage, apiGetProjects } from '@/lib/apiClient';
+import { apiGetProducts, apiGetCategories, apiGetFaqPage, apiGetHomePage, apiGetAboutPage, apiGetProjects, apiGetGoogleReviews } from '@/lib/apiClient';
 import { Category } from '@/types';
 import { getLocale } from 'next-intl/server';
 import SelectedProjects from '@/components/SelectedProjects';
@@ -26,13 +25,14 @@ export default async function Home() {
   const locale = (await getLocale()) as 'tr' | 'en';
 
   // API'den tüm verileri paralel olarak çek
-  const [homeData, aboutData, products, faqData, categories, allProjects] = await Promise.all([
+  const [homeData, aboutData, products, faqData, categories, allProjects, googleReviews] = await Promise.all([
     apiGetHomePage(),
     apiGetAboutPage(),
     apiGetProducts(),
     apiGetFaqPage(),
     apiGetCategories(),
     apiGetProjects(),
+    apiGetGoogleReviews(locale),
   ]);
 
   // Selected Projects Logic
@@ -85,7 +85,7 @@ export default async function Home() {
 
       <AboutSummary
         title={homeData?.about?.title?.[locale] ?? tAbout('title')}
-        historyText={homeData?.about?.description?.[locale] ?? aboutData?.history?.[locale] ?? tAbout('historyText1')}
+        historyText={homeData?.about?.description?.[locale] ?? aboutData?.valuesDescription?.[locale] ?? tAbout('historyText1')}
         philosophyText={homeData?.about?.philosophy?.[locale] ?? aboutData?.vision?.[locale] ?? tAbout('philosophyText')}
         learnMore={tAbout('learnMore')}
         since={homeData?.about?.sinceDate?.[locale] ?? tAbout('since')}
@@ -107,30 +107,47 @@ export default async function Home() {
       <ReviewsSection
         title={tReviews('title')}
         subtitle={tReviews('subtitle')}
-        reviews={[
-          { author: 'Ahmet Yılmaz', rating: 5, date: tReviews('date1'), text: tReviews('review1') },
-          { author: 'Zeynep Kaya', rating: 5, date: tReviews('date2'), text: tReviews('review2') },
-          { author: 'Murat Demir', rating: 5, date: tReviews('date3'), text: tReviews('review3') },
-        ]}
+        // Google'dan gelen yorumlar varsa onu kullan, yoksa Admin panelindeki manuel yorumları kullan
+        reviews={((googleReviews?.reviews && googleReviews.reviews.length > 0) ? googleReviews.reviews : (homeData?.reviews || []))
+          .sort((a: any, b: any) => b.rating - a.rating)
+          .slice(0, 3)
+          .map((r: any) => ({
+            author: r.author_name || r.author, // Google: author_name, Manual: author
+            rating: r.rating,
+            date: r.relative_time_description || r.date, // Google: relative_time_description, Manual: date
+            text: r.text
+          }))}
+        overallRating={googleReviews?.rating || 5}
+        totalReviews={googleReviews?.user_ratings_total || 0}
+        googleBasedOnText={tReviews('googleBasedOn', { count: googleReviews?.user_ratings_total || 0 })}
         viewAllText={tReviews('viewAll')}
+        googleMapsUrl="https://share.google/PuRUdQHxIPjpw4X8Z"
       />
 
       <ProcessSection
         title={t('process.title')}
         subtitle={t('process.subtitle')}
-        steps={[
-          { title: t('process.step1Title'), description: t('process.step1Desc') },
-          { title: t('process.step2Title'), description: t('process.step2Desc') },
-          { title: t('process.step3Title'), description: t('process.step3Desc') },
-          { title: t('process.step4Title'), description: t('process.step4Desc') },
-        ]}
+        steps={
+          (homeData?.process?.steps && homeData.process.steps.length > 0)
+            ? homeData.process.steps.map((s: any) => ({
+              title: s.title[locale],
+              description: s.description[locale],
+              icon: s.icon
+            }))
+            : [
+              { title: t('process.step1Title'), description: t('process.step1Desc') },
+              { title: t('process.step2Title'), description: t('process.step2Desc') },
+              { title: t('process.step3Title'), description: t('process.step3Desc') },
+              { title: t('process.step4Title'), description: t('process.step4Desc') },
+            ]
+        }
       />
 
       {/* Categories Section — API'den gelen kategoriler */}
       <SectionWrapper>
         <SectionHeader
-          title={t('categories.title')}
-          subtitle={t('categories.subtitle')}
+          title={homeData?.categories?.title?.[locale] || t('categories.title')}
+          subtitle={homeData?.categories?.subtitle?.[locale] || t('categories.subtitle')}
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {(categories ?? []).map((cat: Category) => (
